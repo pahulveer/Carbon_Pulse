@@ -114,6 +114,3 @@ npm run build
 ```
 
 The application will be accessible at `http://localhost:5173`.
-
-## Test Credentials
-Not applicable — authentication is intentionally not used per hackathon guidelines. All command center features are accessible immediately upon launch.
