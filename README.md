@@ -6,8 +6,7 @@ A high-precision personal carbon footprint command center that transforms everyd
 Climate Tech
 
 ## Live Demo
-https://carbon-pulse.demo.app
-
+https://pahulveer.github.io/Carbon_Pulse/
 ## Hackathon ID
 
 AZIS-8MNUDY
