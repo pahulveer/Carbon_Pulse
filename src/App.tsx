@@ -41,6 +41,28 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');
   const [historyCategoryFilter, setHistoryCategoryFilter] = useState<ActivityCategory | 'all'>('all');
 
+  // Calendar date tracking with auto-refresh to prevent telemetry staleness across midnight or long sessions
+  const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDate((prev) => {
+        const now = new Date();
+        if (
+          now.getDate() !== prev.getDate() ||
+          now.getMonth() !== prev.getMonth() ||
+          now.getFullYear() !== prev.getFullYear() ||
+          Math.floor(now.getTime() / 60000) !== Math.floor(prev.getTime() / 60000)
+        ) {
+          return now;
+        }
+        return prev;
+      });
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Modal States
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<ActivityLog | null>(null);
@@ -65,10 +87,10 @@ export function App() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  // Compute Weekly Metrics
+  // Compute Weekly Metrics derived dynamically from activities, target, and active calendar date
   const metrics: WeekMetrics = useMemo(() => {
-    return computeWeekMetrics(activities, weeklyTarget);
-  }, [activities, weeklyTarget]);
+    return computeWeekMetrics(activities, weeklyTarget, currentDate);
+  }, [activities, weeklyTarget, currentDate]);
 
   // Persist activities on change
   const handleSaveActivity = (
@@ -181,11 +203,21 @@ export function App() {
     if (scenario === 'balanced') {
       setWeeklyTarget(20);
       saveWeeklyTarget(20);
-      addToast('success', 'Scenario Loaded: On Pace', 'Weekly total ~12.8 kg CO₂ (64% of 20 kg target).');
+      const scMetrics = computeWeekMetrics(data, 20, currentDate);
+      addToast(
+        'success',
+        'Scenario Loaded: On Pace',
+        `Weekly total ${scMetrics.totalCo2Kg.toFixed(1)} kg CO₂ (${scMetrics.percentUsed}% of ${scMetrics.targetKg.toFixed(0)} kg target).`
+      );
     } else if (scenario === 'exceeded') {
       setWeeklyTarget(20);
       saveWeeklyTarget(20);
-      addToast('warning', 'Scenario Loaded: Target Exceeded', 'Triggers DP1 supportive guidance card.');
+      const scMetrics = computeWeekMetrics(data, 20, currentDate);
+      addToast(
+        'warning',
+        'Scenario Loaded: Target Exceeded',
+        `Weekly total ${scMetrics.totalCo2Kg.toFixed(1)} kg CO₂ (+${scMetrics.excessKg.toFixed(1)} kg above target). Triggers DP1 supportive guidance.`
+      );
     } else {
       addToast('info', 'Data Reset', 'All activities cleared to initial blank state.');
     }
@@ -314,6 +346,8 @@ export function App() {
             }}
             onImportData={handleImportJSON}
             initialCategory={historyCategoryFilter}
+            currentWeekStart={metrics.weekStart}
+            currentWeekEnd={metrics.weekEnd}
           />
         )}
       </main>

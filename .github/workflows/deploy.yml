@@ -5,9 +5,9 @@ on:
     branches: ['main']
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages and gh-pages branch
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -17,10 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,17 +32,31 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Run automated test suite
+        run: npm test
+
+      - name: Build production bundle
         run: npm run build
+
+      - name: Deploy to gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        continue-on-error: true
 
-      - name: Upload artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
+        continue-on-error: true
         with:
           path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
+

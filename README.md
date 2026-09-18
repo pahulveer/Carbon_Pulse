@@ -57,8 +57,8 @@ AZIS-8MNUDY
 
 ### 5. Evaluation Scenarios Panel
 A subtle, collapsible drawer in the bottom right corner for judges:
-- **Standard Week (On Pace)**: Loads standard balanced week (~12.8 kg / 20.0 kg target).
-- **DP1 Demo (Target Exceeded)**: Triggers The Nudge with authentic encouragement.
+- **Standard Week (On Pace)**: Loads standard balanced week (13.8 kg / 20.0 kg target, 69% used).
+- **DP1 Demo (Target Exceeded)**: Loads high-emission week (25.5 kg / 20.0 kg target, +5.5 kg above target), triggering The Nudge with authentic encouragement.
 - **DP2 Demo (500,000 km)**: Pre-fills `500,000 km` to demonstrate anomaly interception.
 - **Target Budget**: Quick target adjustment modal.
 - **Reset**: Clears state to test first-run onboarding.

@@ -28,6 +28,8 @@ interface HistoryViewProps {
   onOpenLogModal: () => void;
   onImportData: (jsonStr: string) => void;
   initialCategory?: ActivityCategory | 'all';
+  currentWeekStart?: string;
+  currentWeekEnd?: string;
 }
 
 const ICONS_MAP: Record<ActivityType, React.ReactNode> = {
@@ -46,6 +48,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
   onOpenLogModal,
   onImportData,
   initialCategory = 'all',
+  currentWeekStart,
+  currentWeekEnd,
 }) => {
   const [filter, setFilter] = useState<FilterOptions>({
     searchQuery: '',
@@ -65,14 +69,17 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
   const [customEnd, setCustomEnd] = useState<string>('');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Compute Monday & Sunday of current week for 'this_week' filter
+  // Compute Monday & Sunday of current week for 'this_week' filter (synchronized with app telemetry)
   const { thisWeekStart, thisWeekEnd } = useMemo(() => {
+    if (currentWeekStart && currentWeekEnd) {
+      return { thisWeekStart: currentWeekStart, thisWeekEnd: currentWeekEnd };
+    }
     const now = new Date();
     return {
       thisWeekStart: formatDateISO(getMondayOfWeek(now)),
       thisWeekEnd: formatDateISO(getSundayOfWeek(now)),
     };
-  }, []);
+  }, [currentWeekStart, currentWeekEnd]);
 
   // Filtered Activities
   const filteredActivities = useMemo(() => {

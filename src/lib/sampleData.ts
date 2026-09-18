@@ -18,7 +18,7 @@ export function generateSampleWeekData(scenario: 'balanced' | 'exceeded' | 'empt
   };
 
   if (scenario === 'balanced') {
-    // Total ~12.8 kg CO2 (target 20 kg -> 64% used)
+    // Total 13.76 kg CO2 (target 20 kg -> 69% used, 6.24 kg safe remaining)
     return [
       createActivityLog('car', 15, getDayDate(0), false, 'Morning office commute'), // 15 * 0.2 = 3.0 kg
       createActivityLog('veg_meal', 1, getDayDate(0), false, 'Plant-based lunch'), // 1 * 0.5 = 0.5 kg
@@ -31,7 +31,7 @@ export function generateSampleWeekData(scenario: 'balanced' | 'exceeded' | 'empt
   }
 
   if (scenario === 'exceeded') {
-    // Total ~24.6 kg CO2 (target 20 kg -> exceeded by 4.6 kg, triggers DP1)
+    // Total 25.45 kg CO2 (target 20 kg -> exceeded by 5.45 kg, triggers DP1)
     return [
       createActivityLog('flight', 65, getDayDate(0), false, 'Regional flight for client meeting'), // 65 * 0.25 = 16.25 kg
       createActivityLog('car', 20, getDayDate(1), false, 'Airport transit shuttle'), // 20 * 0.2 = 4.0 kg

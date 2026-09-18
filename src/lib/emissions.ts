@@ -167,27 +167,88 @@ export function getCalculationBreakdown(type: ActivityType, quantity: number) {
 }
 
 /**
+ * Threshold for single-event carbon spike anomaly (in kg CO2)
+ * As defined in Decision Point 2 (DECISIONS.md)
+ */
+export const CO2_ANOMALY_THRESHOLD = 500.0;
+
+export type AnomalyType = 'none' | 'quantity' | 'co2' | 'both';
+
+export interface AnomalyResult {
+  isAbsurd: boolean;
+  anomalyType: AnomalyType;
+  threshold: number;
+  co2Threshold: number;
+  calculatedCO2: number;
+  reason: string;
+}
+
+/**
  * Decision Point 2 Anomaly Detection:
  * Flags if the quantity exceeds the realistic activity threshold OR if the
- * resulting CO2 is astronomical (e.g. > 500 kg CO₂ from a single log).
+ * resulting CO2 is unusually high (>= 500 kg CO2 from a single log).
+ * Provides explainable classification ('quantity', 'co2', 'both').
  */
-export function isAbsurdInput(type: ActivityType, quantity: number): {
-  isAbsurd: boolean;
-  threshold: number;
-  reason: string;
-} {
+export function isAbsurdInput(type: ActivityType, quantity: number): AnomalyResult {
   const def = ACTIVITY_DEFINITIONS[type];
-  if (!quantity || isNaN(quantity) || quantity <= 0) {
-    return { isAbsurd: false, threshold: def.anomalyThreshold, reason: '' };
-  }
+  const threshold = def.anomalyThreshold;
+  const co2Threshold = CO2_ANOMALY_THRESHOLD;
 
-  if (quantity >= def.anomalyThreshold) {
+  if (!quantity || isNaN(quantity) || quantity <= 0) {
     return {
-      isAbsurd: true,
-      threshold: def.anomalyThreshold,
-      reason: `${quantity.toLocaleString()} ${def.unit} is an unusually large value for a single ${def.label.toLowerCase()} entry (expected single-log threshold is ${def.anomalyThreshold.toLocaleString()} ${def.unit}).`,
+      isAbsurd: false,
+      anomalyType: 'none',
+      threshold,
+      co2Threshold,
+      calculatedCO2: 0,
+      reason: '',
     };
   }
 
-  return { isAbsurd: false, threshold: def.anomalyThreshold, reason: '' };
+  const calculatedCO2 = calculateCO2(type, quantity);
+  const isQtyAnomalous = quantity >= threshold;
+  const isCo2Anomalous = calculatedCO2 >= co2Threshold;
+
+  if (isQtyAnomalous && isCo2Anomalous) {
+    return {
+      isAbsurd: true,
+      anomalyType: 'both',
+      threshold,
+      co2Threshold,
+      calculatedCO2,
+      reason: `Unusually large quantity (${quantity.toLocaleString()} ${def.unit} ≥ ${threshold.toLocaleString()} ${def.unit}) and unusually high estimated emissions (${calculatedCO2.toLocaleString()} kg CO₂ ≥ ${co2Threshold.toLocaleString()} kg CO₂).`,
+    };
+  }
+
+  if (isQtyAnomalous) {
+    return {
+      isAbsurd: true,
+      anomalyType: 'quantity',
+      threshold,
+      co2Threshold,
+      calculatedCO2,
+      reason: `Unusually large quantity (${quantity.toLocaleString()} ${def.unit} ≥ ${threshold.toLocaleString()} ${def.unit}) for a single ${def.label.toLowerCase()} entry.`,
+    };
+  }
+
+  if (isCo2Anomalous) {
+    return {
+      isAbsurd: true,
+      anomalyType: 'co2',
+      threshold,
+      co2Threshold,
+      calculatedCO2,
+      reason: `Unusually high estimated emissions (${calculatedCO2.toLocaleString()} kg CO₂ ≥ ${co2Threshold.toLocaleString()} kg CO₂) from a single ${def.label.toLowerCase()} entry.`,
+    };
+  }
+
+  return {
+    isAbsurd: false,
+    anomalyType: 'none',
+    threshold,
+    co2Threshold,
+    calculatedCO2,
+    reason: '',
+  };
 }
+
