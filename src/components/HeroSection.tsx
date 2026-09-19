@@ -300,7 +300,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           >
             {/* Background 3D Landscape Image */}
             <img
-              src="./hero_landscape.jpg"
+              src={`${import.meta.env.BASE_URL}hero_landscape.jpg`}
               alt="Futuristic sustainable eco-architecture nestled in lush mountains, forest, and crystal waters"
               style={{
                 width: '100%',
