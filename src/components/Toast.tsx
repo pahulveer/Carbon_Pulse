@@ -43,24 +43,28 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
 
   const config = {
     success: {
-      icon: <CheckCircle2 size={18} color="var(--emerald-400)" />,
-      border: 'rgba(52, 211, 153, 0.4)',
-      bg: 'rgba(10, 20, 32, 0.96)',
+      icon: <CheckCircle2 size={18} color="var(--forest-700)" />,
+      border: 'var(--sage-200)',
+      bg: '#FFFFFF',
+      accent: 'var(--forest-700)',
     },
     warning: {
-      icon: <AlertTriangle size={18} color="var(--amber-400)" />,
-      border: 'rgba(245, 158, 11, 0.4)',
-      bg: 'rgba(22, 18, 10, 0.96)',
+      icon: <AlertTriangle size={18} color="var(--amber-600)" />,
+      border: 'rgba(245, 158, 11, 0.35)',
+      bg: '#FFFBEB',
+      accent: 'var(--amber-500)',
     },
     error: {
-      icon: <XCircle size={18} color="var(--rose-400)" />,
-      border: 'rgba(244, 63, 94, 0.4)',
-      bg: 'rgba(25, 12, 18, 0.96)',
+      icon: <XCircle size={18} color="var(--rose-500)" />,
+      border: 'rgba(225, 29, 72, 0.35)',
+      bg: '#FFF1F2',
+      accent: 'var(--rose-500)',
     },
     info: {
-      icon: <Info size={18} color="var(--sky-400)" />,
-      border: 'rgba(56, 189, 248, 0.4)',
-      bg: 'rgba(10, 18, 30, 0.96)',
+      icon: <Info size={18} color="var(--forest-800)" />,
+      border: 'var(--border-subtle)',
+      bg: '#FFFFFF',
+      accent: 'var(--forest-800)',
     },
   }[toast.type];
 
@@ -70,21 +74,23 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
       style={{
         pointerEvents: 'auto',
         background: config.bg,
-        border: `1px solid ${config.border}`,
+        border: `1.5px solid ${config.border}`,
+        borderLeft: `4px solid ${config.accent}`,
         borderRadius: 'var(--radius-md)',
-        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.6)',
+        boxShadow: 'var(--shadow-floating)',
         padding: '12px 16px',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
         gap: '12px',
         animation: 'fadeIn 0.2s ease-out',
+        minWidth: '280px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
         <div style={{ marginTop: '2px' }}>{config.icon}</div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#FFFFFF' }}>{toast.title}</div>
+          <div style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--forest-950)' }}>{toast.title}</div>
           {toast.description && (
             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
               {toast.description}
@@ -97,7 +103,7 @@ const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void
         onClick={() => onDismiss(toast.id)}
         aria-label="Dismiss notification"
         style={{
-          color: 'var(--text-dim)',
+          color: 'var(--text-muted)',
           background: 'none',
           border: 'none',
           padding: '2px',

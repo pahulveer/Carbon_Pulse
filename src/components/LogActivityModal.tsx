@@ -196,24 +196,24 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  background: 'rgba(16, 185, 129, 0.15)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--sage-100)',
+                  border: '1px solid var(--sage-200)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--emerald-400)',
+                  color: 'var(--forest-700)',
                 }}
               >
                 <Calculator size={18} />
               </div>
               <div>
-                <h2 id="modal-log-title" style={{ fontSize: '1.12rem', fontWeight: 800 }}>
+                <h2 id="modal-log-title" style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--forest-950)' }}>
                   {editingActivity ? 'Edit Carbon Activity' : 'Log Carbon Activity'}
                 </h2>
-                <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                <p style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>
                   {editingActivity ? 'Modify recorded quantity, date, or notes' : 'Record emissions with real-time conversion preview'}
                 </p>
               </div>
@@ -240,18 +240,18 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
             }}
           >
             {/* Scrollable Form Body */}
-            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               {/* Step 1: Activity Type Selection */}
               <div>
                 <label
                   style={{
                     display: 'block',
                     fontSize: '0.78rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.04em',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '8px',
+                    color: 'var(--forest-900)',
+                    marginBottom: '10px',
                   }}
                 >
                   1. Select Activity Type
@@ -261,7 +261,7 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '8px',
+                    gap: '10px',
                   }}
                 >
                   {(Object.keys(ACTIVITY_DEFINITIONS) as ActivityType[]).map((typeKey) => {
@@ -275,35 +275,59 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                         aria-pressed={isSelected}
                         onClick={() => handleTypeSelect(typeKey)}
                         style={{
-                          padding: '8px 6px',
+                          padding: '12px 8px',
                           borderRadius: 'var(--radius-md)',
                           background: isSelected
-                            ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%)'
-                            : 'rgba(12, 19, 32, 0.8)',
-                          border: isSelected ? '1.5px solid var(--emerald-400)' : '1px solid var(--border-subtle)',
+                            ? 'linear-gradient(145deg, var(--forest-900) 0%, var(--forest-950) 100%)'
+                            : '#FFFFFF',
+                          border: isSelected ? '1.5px solid var(--forest-700)' : '1.5px solid var(--border-subtle)',
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
-                          gap: '4px',
+                          gap: '6px',
                           textAlign: 'center',
-                          boxShadow: isSelected ? '0 2px 8px -2px rgba(0, 0, 0, 0.4), inset 0 0 10px -2px rgba(16, 185, 129, 0.35)' : 'none',
+                          boxShadow: isSelected
+                            ? '0 8px 20px -3px rgba(13, 40, 24, 0.28), 0 0 0 2px rgba(45, 106, 79, 0.25)'
+                            : 'var(--shadow-subtle)',
                           overflow: 'hidden',
                           transition: 'all var(--transition-fast)',
                           cursor: 'pointer',
                         }}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.borderColor = 'var(--forest-600)';
+                            e.currentTarget.style.background = 'var(--bg-surface-soft)';
+                            e.currentTarget.style.transform = 'translateY(-1px)';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) {
+                            e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                            e.currentTarget.style.background = '#FFFFFF';
+                            e.currentTarget.style.transform = 'none';
+                          }
+                        }}
                       >
                         <div
                           style={{
-                            color: isSelected ? 'var(--emerald-400)' : 'var(--text-secondary)',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: isSelected ? 'rgba(255, 255, 255, 0.14)' : 'var(--sage-100)',
+                            color: isSelected ? '#FFFFFF' : 'var(--forest-700)',
+                            transition: 'all var(--transition-fast)',
                           }}
                         >
                           {ICONS_MAP[typeKey]}
                         </div>
                         <span
                           style={{
-                            fontSize: '0.78rem',
-                            fontWeight: isSelected ? 700 : 500,
-                            color: isSelected ? '#FFFFFF' : 'var(--text-secondary)',
+                            fontSize: '0.8rem',
+                            fontWeight: isSelected ? 800 : 600,
+                            color: isSelected ? '#FFFFFF' : 'var(--forest-950)',
                             lineHeight: 1.2,
                           }}
                         >
@@ -311,9 +335,13 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                         </span>
                         <span
                           style={{
-                            fontSize: '0.67rem',
+                            fontSize: '0.68rem',
                             fontFamily: 'var(--font-mono)',
-                            color: isSelected ? 'var(--emerald-400)' : 'var(--text-muted)',
+                            fontWeight: 600,
+                            padding: '2px 6px',
+                            borderRadius: 'var(--radius-pill)',
+                            background: isSelected ? 'rgba(255, 255, 255, 0.15)' : 'rgba(45, 106, 79, 0.08)',
+                            color: isSelected ? 'var(--sage-200)' : 'var(--forest-700)',
                           }}
                         >
                           {def.factor.toFixed(2)} kg/{def.unit}
@@ -331,23 +359,23 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '6px',
+                    marginBottom: '8px',
                   }}
                 >
                   <label
                     htmlFor="activity-qty-input"
                     style={{
                       fontSize: '0.78rem',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
-                      color: 'var(--text-secondary)',
+                      color: 'var(--forest-900)',
                     }}
                   >
                     2. Enter Quantity ({currentDef.unit})
                   </label>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                    Unit: <strong>{currentDef.unitLabelPlural}</strong>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+                    Unit: <strong style={{ color: 'var(--forest-950)' }}>{currentDef.unitLabelPlural}</strong>
                   </span>
                 </div>
 
@@ -367,24 +395,31 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                       required
                       style={{
                         width: '100%',
-                        fontSize: '1.2rem',
+                        fontSize: '1.25rem',
                         fontWeight: 700,
                         fontFamily: 'var(--font-mono)',
-                        padding: '10px 14px',
-                        background: 'rgba(8, 14, 25, 0.9)',
-                        borderColor: qtyError ? 'var(--rose-400)' : undefined,
+                        padding: '12px 16px',
+                        background: '#FFFFFF',
+                        color: 'var(--forest-950)',
+                        border: qtyError ? '1.5px solid var(--rose-500)' : '1.5px solid var(--border-subtle)',
+                        borderRadius: 'var(--radius-md)',
+                        boxShadow: 'var(--shadow-subtle)',
                       }}
                     />
                     <span
                       style={{
                         position: 'absolute',
-                        right: '14px',
+                        right: '12px',
                         top: '50%',
                         transform: 'translateY(-50%)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: '0.85rem',
+                        fontSize: '0.78rem',
                         fontWeight: 700,
-                        color: 'var(--emerald-400)',
+                        color: 'var(--forest-800)',
+                        background: 'var(--sage-100)',
+                        border: '1px solid var(--sage-200)',
+                        padding: '4px 10px',
+                        borderRadius: 'var(--radius-pill)',
                         pointerEvents: 'none',
                       }}
                     >
@@ -394,14 +429,14 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                 </div>
 
                 {qtyError && (
-                  <div style={{ marginTop: '5px', fontSize: '0.78rem', color: 'var(--rose-400)', fontWeight: 500 }}>
+                  <div style={{ marginTop: '6px', fontSize: '0.78rem', color: 'var(--rose-500)', fontWeight: 600 }}>
                     {qtyError}
                   </div>
                 )}
 
                 {/* Quick Preset Buttons */}
-                <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginRight: '4px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', marginRight: '2px' }}>
                     Presets:
                   </span>
                   {(selectedType === 'car' || selectedType === 'bus'
@@ -420,14 +455,29 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                         type="button"
                         aria-pressed={isActive}
                         onClick={() => applyPreset(val)}
-                        className={`btn btn-sm ${isActive ? 'btn-primary' : 'btn-secondary'}`}
                         style={{
-                          padding: '3px 9px',
+                          padding: '4px 12px',
                           fontSize: '0.74rem',
                           fontWeight: isActive ? 700 : 500,
-                          background: isActive ? 'rgba(16, 185, 129, 0.22)' : undefined,
-                          borderColor: isActive ? 'var(--emerald-400)' : undefined,
-                          color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
+                          borderRadius: 'var(--radius-pill)',
+                          background: isActive ? 'var(--forest-800)' : 'var(--bg-canvas)',
+                          border: isActive ? '1px solid var(--forest-900)' : '1px solid var(--border-subtle)',
+                          color: isActive ? '#FFFFFF' : 'var(--forest-900)',
+                          boxShadow: isActive ? '0 2px 6px rgba(27, 67, 50, 0.25)' : 'none',
+                          cursor: 'pointer',
+                          transition: 'all var(--transition-fast)',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.background = 'var(--sage-200)';
+                            e.currentTarget.style.borderColor = 'var(--forest-600)';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) {
+                            e.currentTarget.style.background = 'var(--bg-canvas)';
+                            e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                          }
                         }}
                       >
                         {label}
@@ -452,10 +502,10 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                     style={{
                       display: 'block',
                       fontSize: '0.78rem',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
-                      color: 'var(--text-secondary)',
+                      color: 'var(--forest-900)',
                       marginBottom: '6px',
                     }}
                   >
@@ -469,10 +519,14 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                     required
                     style={{
                       width: '100%',
-                      padding: '8px 12px',
+                      padding: '10px 14px',
                       fontFamily: 'var(--font-mono)',
-                      background: 'rgba(8, 14, 25, 0.9)',
-                      fontSize: '0.85rem',
+                      background: '#FFFFFF',
+                      color: 'var(--forest-950)',
+                      border: '1.5px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.88rem',
+                      boxShadow: 'var(--shadow-subtle)',
                     }}
                   />
                 </div>
@@ -484,10 +538,10 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                     style={{
                       display: 'block',
                       fontSize: '0.78rem',
-                      fontWeight: 600,
+                      fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
-                      color: 'var(--text-secondary)',
+                      color: 'var(--forest-900)',
                       marginBottom: '6px',
                     }}
                   >
@@ -496,15 +550,19 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                   <input
                     id="activity-notes-input"
                     type="text"
-                    placeholder="e.g. Daily commute"
+                    placeholder="e.g. Commute to office"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     maxLength={80}
                     style={{
                       width: '100%',
-                      padding: '8px 12px',
-                      background: 'rgba(8, 14, 25, 0.9)',
-                      fontSize: '0.85rem',
+                      padding: '10px 14px',
+                      background: '#FFFFFF',
+                      color: 'var(--forest-950)',
+                      border: '1.5px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.88rem',
+                      boxShadow: 'var(--shadow-subtle)',
                     }}
                   />
                 </div>
@@ -513,10 +571,11 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
               {/* Transparent Calculation Preview Box */}
               <div
                 style={{
-                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 24, 42, 0.85) 100%)',
-                  border: '1px solid rgba(52, 211, 153, 0.3)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '12px 16px',
+                  background: 'linear-gradient(135deg, var(--sage-100) 0%, #E2EDE0 100%)',
+                  border: '1.5px solid var(--sage-200)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '14px 18px',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.9), var(--shadow-subtle)',
                 }}
               >
                 <div
@@ -524,13 +583,13 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginBottom: '4px',
+                    marginBottom: '8px',
                   }}
                 >
-                  <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--emerald-400)', fontWeight: 700 }}>
+                  <span className="badge badge-emerald" style={{ fontSize: '0.68rem', fontWeight: 700 }}>
                     Live Conversion Preview
                   </span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
                     Factor: {currentDef.factor.toFixed(2)} kg/{currentDef.unit}
                   </span>
                 </div>
@@ -538,9 +597,14 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                 <div
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.88rem',
-                    color: 'var(--text-primary)',
-                    marginBottom: '4px',
+                    fontSize: '0.84rem',
+                    color: 'var(--forest-800)',
+                    fontWeight: 600,
+                    background: 'rgba(255, 255, 255, 0.75)',
+                    padding: '6px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid rgba(45, 106, 79, 0.12)',
+                    marginBottom: '10px',
                   }}
                 >
                   {breakdown.formulaString}
@@ -550,13 +614,13 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                   style={{
                     display: 'flex',
                     alignItems: 'baseline',
-                    gap: '6px',
+                    gap: '8px',
                   }}
                 >
-                  <span style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--forest-950)', fontFamily: 'var(--font-mono)', letterSpacing: '-0.02em' }}>
                     {breakdown.totalFormatted}
                   </span>
-                  <span style={{ fontSize: '0.88rem', color: 'var(--emerald-400)', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.88rem', color: 'var(--forest-700)', fontWeight: 700 }}>
                     kg CO₂ Produced
                   </span>
                 </div>
@@ -578,10 +642,10 @@ export const LogActivityModal: React.FC<LogActivityModalProps> = ({
                 className="btn btn-primary"
                 style={{
                   flex: '2 1 200px',
-                  padding: '10px 20px',
-                  fontSize: '0.95rem',
+                  padding: '12px 20px',
+                  fontSize: '0.92rem',
                   fontWeight: 700,
-                  boxShadow: '0 0 20px rgba(16, 185, 129, 0.35)',
+                  boxShadow: '0 4px 14px rgba(13, 40, 24, 0.25)',
                 }}
               >
                 <CheckCircle2 size={17} />

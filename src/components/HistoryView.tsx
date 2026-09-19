@@ -259,7 +259,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
           <div style={{ position: 'relative' }}>
             <Search
               size={16}
-              color="var(--text-dim)"
+              color="var(--forest-700)"
               style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}
             />
             <input

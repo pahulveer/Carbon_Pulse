@@ -60,24 +60,24 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div
               style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'rgba(16, 185, 129, 0.15)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'var(--sage-100)',
+                border: '1px solid var(--sage-200)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--emerald-400)',
+                color: 'var(--forest-700)',
               }}
             >
               <Target size={18} />
             </div>
             <div>
-              <h2 id="target-modal-title" style={{ fontSize: '1.12rem', fontWeight: 800 }}>
+              <h2 id="target-modal-title" style={{ fontSize: '1.18rem', fontWeight: 800, color: 'var(--forest-950)' }}>
                 Set Weekly Carbon Target
               </h2>
-              <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+              <p style={{ fontSize: '0.76rem', color: 'var(--text-secondary)' }}>
                 Define your weekly emissions budget (Monday → Sunday)
               </p>
             </div>
@@ -103,23 +103,23 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
             overflow: 'hidden',
           }}
         >
-          <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           {/* Preset Buttons */}
-          <div style={{ marginBottom: '20px' }}>
+          <div>
             <label
               style={{
                 display: 'block',
-                fontSize: '0.82rem',
-                fontWeight: 600,
+                fontSize: '0.78rem',
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                color: 'var(--text-secondary)',
-                marginBottom: '8px',
+                color: 'var(--forest-900)',
+                marginBottom: '10px',
               }}
             >
               Quick Presets
             </label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
               {PRESET_TARGETS.map((p) => {
                 const isSelected = parsedVal === p.value;
                 return (
@@ -128,21 +128,39 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
                     type="button"
                     onClick={() => setTargetInput(p.value.toString())}
                     style={{
-                      padding: '10px 12px',
+                      padding: '12px 14px',
                       borderRadius: 'var(--radius-md)',
-                      background: isSelected ? 'rgba(52, 211, 153, 0.15)' : 'rgba(14, 23, 40, 0.8)',
-                      border: isSelected ? '1.5px solid var(--emerald-400)' : '1px solid var(--border-subtle)',
+                      background: isSelected
+                        ? 'linear-gradient(145deg, var(--forest-900) 0%, var(--forest-950) 100%)'
+                        : '#FFFFFF',
+                      border: isSelected ? '1.5px solid var(--forest-700)' : '1.5px solid var(--border-subtle)',
                       textAlign: 'left',
+                      boxShadow: isSelected
+                        ? '0 8px 20px -3px rgba(13, 40, 24, 0.28), 0 0 0 2px rgba(45, 106, 79, 0.25)'
+                        : 'var(--shadow-subtle)',
                       transition: 'all var(--transition-fast)',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.borderColor = 'var(--forest-600)';
+                        e.currentTarget.style.background = 'var(--bg-surface-soft)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                        e.currentTarget.style.background = '#FFFFFF';
+                      }
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isSelected ? 'var(--emerald-400)' : '#FFFFFF' }}>
+                      <span style={{ fontWeight: 800, fontSize: '0.95rem', color: isSelected ? '#FFFFFF' : 'var(--forest-950)' }}>
                         {p.label}
                       </span>
-                      {isSelected && <Check size={14} color="var(--emerald-400)" />}
+                      {isSelected && <Check size={16} color="var(--sage-200)" />}
                     </div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    <div style={{ fontSize: '0.74rem', color: isSelected ? 'rgba(255, 255, 255, 0.8)' : 'var(--text-secondary)', marginTop: '4px' }}>
                       {p.description}
                     </div>
                   </button>
@@ -152,16 +170,16 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
           </div>
 
           {/* Custom Input */}
-          <div style={{ marginBottom: '20px' }}>
+          <div>
             <label
               htmlFor="custom-target-input"
               style={{
                 display: 'block',
-                fontSize: '0.82rem',
-                fontWeight: 600,
+                fontSize: '0.78rem',
+                fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                color: 'var(--text-secondary)',
+                color: 'var(--forest-900)',
                 marginBottom: '8px',
               }}
             >
@@ -186,20 +204,27 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
                   fontWeight: 700,
                   fontFamily: 'var(--font-mono)',
                   padding: '12px 16px',
-                  background: 'rgba(8, 14, 25, 0.9)',
-                  borderColor: targetError ? 'var(--rose-400)' : undefined,
+                  background: '#FFFFFF',
+                  color: 'var(--forest-950)',
+                  border: targetError ? '1.5px solid var(--rose-500)' : '1.5px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-subtle)',
                 }}
               />
               <span
                 style={{
                   position: 'absolute',
-                  right: '14px',
+                  right: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.78rem',
                   fontWeight: 700,
-                  color: 'var(--emerald-400)',
+                  color: 'var(--forest-800)',
+                  background: 'var(--sage-100)',
+                  border: '1px solid var(--sage-200)',
+                  padding: '4px 10px',
+                  borderRadius: 'var(--radius-pill)',
                   pointerEvents: 'none',
                 }}
               >
@@ -207,7 +232,7 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
               </span>
             </div>
             {targetError && (
-              <div style={{ marginTop: '6px', fontSize: '0.8rem', color: 'var(--rose-400)', fontWeight: 500 }}>
+              <div style={{ marginTop: '6px', fontSize: '0.8rem', color: 'var(--rose-500)', fontWeight: 600 }}>
                 {targetError}
               </div>
             )}
@@ -216,31 +241,31 @@ export const WeeklyTargetModal: React.FC<WeeklyTargetModalProps> = ({
           {/* Dynamic Impact Preview */}
           <div
             style={{
-              background: 'rgba(10, 16, 28, 0.95)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-md)',
-              padding: '14px 16px',
-              marginBottom: '24px',
+              background: 'linear-gradient(135deg, var(--sage-100) 0%, #E2EDE0 100%)',
+              border: '1.5px solid var(--sage-200)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '14px 18px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.9), var(--shadow-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
             <div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Current Week Footprint:</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Current Week Footprint:</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: 'var(--forest-950)' }}>
                 {currentWeeklyFootprint.toFixed(1)} / {isValid ? parsedVal.toFixed(1) : '--'} kg
               </div>
             </div>
 
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Target Utilization:</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>Target Utilization:</div>
               <div
                 style={{
-                  fontSize: '1.1rem',
+                  fontSize: '1.2rem',
                   fontWeight: 800,
                   fontFamily: 'var(--font-mono)',
-                  color: previewUsedPct > 100 ? 'var(--rose-400)' : 'var(--emerald-400)',
+                  color: previewUsedPct > 100 ? 'var(--rose-500)' : 'var(--forest-800)',
                 }}
               >
                 {previewUsedPct}%

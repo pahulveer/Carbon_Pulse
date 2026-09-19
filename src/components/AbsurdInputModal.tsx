@@ -79,7 +79,7 @@ export const AbsurdInputModal: React.FC<AbsurdInputModalProps> = ({
               <span className="badge badge-amber" style={{ fontSize: '0.72rem', marginBottom: '4px' }}>
                 ANOMALY DETECTION (DP2)
               </span>
-              <h3 id="absurd-modal-title" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF' }}>
+              <h3 id="absurd-modal-title" style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--forest-950)' }}>
                 UNUSUALLY LARGE ENTRY
               </h3>
             </div>
@@ -88,32 +88,33 @@ export const AbsurdInputModal: React.FC<AbsurdInputModalProps> = ({
           {/* Mathematical Impact Card */}
           <div
             style={{
-              background: 'rgba(10, 16, 28, 0.95)',
-              border: '1px solid rgba(245, 158, 11, 0.25)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px',
+              background: '#FFFBEB',
+              border: '1.5px solid rgba(245, 158, 11, 0.35)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '16px 18px',
               marginBottom: '18px',
+              boxShadow: 'var(--shadow-subtle)',
             }}
           >
-            <div style={{ fontSize: '0.86rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
-              Input: <strong style={{ color: 'var(--text-primary)' }}>{quantity.toLocaleString()} {def.unit}</strong> of{' '}
+            <div style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              Input: <strong style={{ color: 'var(--forest-950)' }}>{quantity.toLocaleString()} {def.unit}</strong> of{' '}
               {def.label.toLowerCase()}
             </div>
-            <div style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 600 }}>
               Resulting Footprint:
             </div>
             <div
               style={{
-                fontSize: '1.85rem',
+                fontSize: '1.9rem',
                 fontWeight: 800,
                 fontFamily: 'var(--font-mono)',
-                color: 'var(--amber-400)',
+                color: 'var(--amber-600)',
                 margin: '4px 0 8px 0',
               }}
             >
               {calculatedCO2.toLocaleString()} kg CO₂
             </div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
               Formula: {quantity.toLocaleString()} {def.unit} × {def.factor.toFixed(2)} kg/{def.unit}
             </div>
           </div>
@@ -148,7 +149,6 @@ export const AbsurdInputModal: React.FC<AbsurdInputModalProps> = ({
               className="btn btn-secondary"
               style={{
                 flex: '1 1 140px',
-                borderColor: 'rgba(255, 255, 255, 0.2)',
               }}
             >
               <RotateCcw size={16} />
