@@ -18,12 +18,11 @@ import { HeroSection } from './components/HeroSection';
 import { FeatureStrip } from './components/FeatureStrip';
 import { Dashboard } from './components/Dashboard';
 import { HistoryView } from './components/HistoryView';
+import { MissionSection } from './components/MissionSection';
 import { LogActivityModal } from './components/LogActivityModal';
 import { WeeklyTargetModal } from './components/WeeklyTargetModal';
-import { SolutionsModal } from './components/SolutionsModal';
+import { SolutionsDrawer } from './components/SolutionsDrawer';
 import { WatchDemoModal } from './components/WatchDemoModal';
-import { SignInModal } from './components/SignInModal';
-import { AboutModal } from './components/AboutModal';
 import { SearchModal } from './components/SearchModal';
 import { TargetExceededNudge } from './components/TargetExceededNudge';
 import { DemoToolbar } from './components/DemoToolbar';
@@ -49,7 +48,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard');
   const [historyCategoryFilter, setHistoryCategoryFilter] = useState<ActivityCategory | 'all'>('all');
 
-  // Calendar date tracking with auto-refresh to prevent telemetry staleness across midnight or long sessions
+  // Calendar date tracking with auto-refresh to prevent telemetry staleness
   const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
 
   useEffect(() => {
@@ -71,16 +70,14 @@ export function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Modal States
+  // Modal & Drawer States
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<ActivityLog | null>(null);
   const [initialLogType, setInitialLogType] = useState<ActivityType>('car');
   const [initialLogQty, setInitialLogQty] = useState<number | undefined>(undefined);
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
-  const [isSolutionsModalOpen, setIsSolutionsModalOpen] = useState(false);
+  const [isSolutionsDrawerOpen, setIsSolutionsDrawerOpen] = useState(false);
   const [isDemoTourOpen, setIsDemoTourOpen] = useState(false);
-  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
-  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   // Toasts
@@ -128,7 +125,7 @@ export function App() {
     if (!metrics.isTargetExceeded && newLog.co2Kg < 5) {
       try {
         confetti({
-          particleCount: 28,
+          particleCount: 26,
           spread: 45,
           origin: { y: 0.85, x: 0.8 },
           colors: ['#40916c', '#52b788', '#1b4332'],
@@ -261,10 +258,8 @@ export function App() {
       if (e.key === 'Escape') {
         setIsLogModalOpen(false);
         setIsTargetModalOpen(false);
-        setIsSolutionsModalOpen(false);
+        setIsSolutionsDrawerOpen(false);
         setIsDemoTourOpen(false);
-        setIsSignInModalOpen(false);
-        setIsAboutModalOpen(false);
         setIsSearchModalOpen(false);
         return;
       }
@@ -299,7 +294,7 @@ export function App() {
 
   return (
     <div className="app-wrapper">
-      {/* Top Floating Pill Navigation */}
+      {/* Top Navigation */}
       <Navbar
         metrics={metrics}
         activeTab={activeTab}
@@ -313,44 +308,47 @@ export function App() {
           setIsLogModalOpen(true);
         }}
         onOpenTargetModal={() => setIsTargetModalOpen(true)}
-        onOpenSolutionsModal={() => setIsSolutionsModalOpen(true)}
-        onOpenAboutModal={() => setIsAboutModalOpen(true)}
-        onOpenSignInModal={() => setIsSignInModalOpen(true)}
+        onOpenSolutionsDrawer={() => setIsSolutionsDrawerOpen(true)}
         onOpenSearchModal={() => setIsSearchModalOpen(true)}
       />
 
-      {/* Main Content Area */}
+      {/* Main Composition Root */}
       <main className="main-container">
-        {/* If in Dashboard tab, render Hero Section & Feature Strip */}
-        {activeTab === 'dashboard' && (
-          <>
-            <HeroSection
-              metrics={metrics}
-              onStartTracking={() => {
-                setEditingActivity(null);
-                setInitialLogQty(undefined);
-                setIsLogModalOpen(true);
-              }}
-              onWatchDemo={() => setIsDemoTourOpen(true)}
-            />
+        {/* Section 1: Hero Overview with 3D Nature Diorama */}
+        <section id="home">
+          <HeroSection
+            metrics={metrics}
+            activities={activities}
+            onStartTracking={() => {
+              setEditingActivity(null);
+              setInitialLogQty(undefined);
+              setIsLogModalOpen(true);
+            }}
+            onWatchDemo={() => setIsDemoTourOpen(true)}
+          />
+        </section>
 
-            <FeatureStrip
-              onTrackClick={() => {
-                setEditingActivity(null);
-                setInitialLogQty(undefined);
-                setIsLogModalOpen(true);
-              }}
-              onInsightsClick={() => {
+        {/* Section 2: Quick Feature Access Strip */}
+        <section id="features">
+          <FeatureStrip
+            onTrackClick={() => {
+              setEditingActivity(null);
+              setInitialLogQty(undefined);
+              setIsLogModalOpen(true);
+            }}
+            onInsightsClick={() => {
+              if (activeTab !== 'dashboard') setActiveTab('dashboard');
+              setTimeout(() => {
                 const el = document.getElementById('insights-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              onGoalsClick={() => setIsTargetModalOpen(true)}
-              onSolutionsClick={() => setIsSolutionsModalOpen(true)}
-            />
-          </>
-        )}
+              }, 60);
+            }}
+            onGoalsClick={() => setIsTargetModalOpen(true)}
+            onSolutionsClick={() => setIsSolutionsDrawerOpen(true)}
+          />
+        </section>
 
-        {/* Decision Point 1: The Nudge (Visible when target is crossed, regardless of tab) */}
+        {/* Decision Point 1: Supportive Target Nudge */}
         <TargetExceededNudge
           metrics={metrics}
           onOpenLogModal={() => {
@@ -365,75 +363,83 @@ export function App() {
           }}
         />
 
-        {/* View Switcher: Dashboard vs Activity Ledger */}
-        {activeTab === 'dashboard' ? (
-          <Dashboard
-            metrics={metrics}
-            recentActivities={activities}
-            onOpenLogModal={(type) => {
-              setEditingActivity(null);
-              if (type) setInitialLogType(type);
-              setInitialLogQty(undefined);
-              setIsLogModalOpen(true);
-            }}
-            onOpenTargetModal={() => setIsTargetModalOpen(true)}
-            onDeleteActivity={handleDeleteActivity}
-            onEditActivity={handleEditActivity}
-            onViewAllHistory={() => {
-              setHistoryCategoryFilter('all');
-              setActiveTab('history');
-            }}
-            onFilterByCategory={(cat) => {
-              setHistoryCategoryFilter(cat);
-              setActiveTab('history');
-            }}
-          />
-        ) : (
-          <HistoryView
-            activities={activities}
-            onDeleteActivity={handleDeleteActivity}
-            onEditActivity={handleEditActivity}
-            onOpenLogModal={() => {
-              setEditingActivity(null);
-              setInitialLogQty(undefined);
-              setIsLogModalOpen(true);
-            }}
-            onImportData={handleImportJSON}
-            initialCategory={historyCategoryFilter}
-            currentWeekStart={metrics.weekStart}
-            currentWeekEnd={metrics.weekEnd}
-          />
-        )}
+        {/* Section 3: Activity Tracker & Command Center */}
+        <section id="track" style={{ scrollMarginTop: '90px' }}>
+          {activeTab === 'dashboard' ? (
+            <Dashboard
+              metrics={metrics}
+              recentActivities={activities}
+              onOpenLogModal={(type) => {
+                setEditingActivity(null);
+                if (type) setInitialLogType(type);
+                setInitialLogQty(undefined);
+                setIsLogModalOpen(true);
+              }}
+              onOpenTargetModal={() => setIsTargetModalOpen(true)}
+              onDeleteActivity={handleDeleteActivity}
+              onEditActivity={handleEditActivity}
+              onViewAllHistory={() => {
+                setHistoryCategoryFilter('all');
+                setActiveTab('history');
+              }}
+              onFilterByCategory={(cat) => {
+                setHistoryCategoryFilter(cat);
+                setActiveTab('history');
+              }}
+            />
+          ) : (
+            <HistoryView
+              activities={activities}
+              onDeleteActivity={handleDeleteActivity}
+              onEditActivity={handleEditActivity}
+              onOpenLogModal={() => {
+                setEditingActivity(null);
+                setInitialLogQty(undefined);
+                setIsLogModalOpen(true);
+              }}
+              onImportData={handleImportJSON}
+              initialCategory={historyCategoryFilter}
+              currentWeekStart={metrics.weekStart}
+              currentWeekEnd={metrics.weekEnd}
+            />
+          )}
+        </section>
+
+        {/* Section 4: Mission & Principles */}
+        <section id="mission">
+          <MissionSection />
+        </section>
       </main>
 
-      {/* Modern Nature Editorial Footer */}
+      {/* Editorial Footer */}
       <Footer
         onNavClick={(sec) => {
           if (sec === 'solutions') {
-            setIsSolutionsModalOpen(true);
+            setIsSolutionsDrawerOpen(true);
           } else if (sec === 'about') {
-            setIsAboutModalOpen(true);
+            const el = document.getElementById('mission');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
           } else if (sec === 'track') {
-            setEditingActivity(null);
-            setInitialLogQty(undefined);
-            setIsLogModalOpen(true);
+            const el = document.getElementById('track');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
           } else if (sec === 'history') {
             setActiveTab('history');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const el = document.getElementById('track');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
           } else if (sec === 'insights') {
-            setActiveTab('dashboard');
+            if (activeTab !== 'dashboard') setActiveTab('dashboard');
             setTimeout(() => {
               const el = document.getElementById('insights-section');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }, 50);
           } else {
-            setActiveTab('dashboard');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const el = document.getElementById('home');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
           }
         }}
       />
 
-      {/* Modals */}
+      {/* Modals & Slide-Over Drawers */}
       <LogActivityModal
         isOpen={isLogModalOpen}
         onClose={() => {
@@ -455,11 +461,11 @@ export function App() {
         onSaveTarget={handleSaveTarget}
       />
 
-      <SolutionsModal
-        isOpen={isSolutionsModalOpen}
-        onClose={() => setIsSolutionsModalOpen(false)}
+      <SolutionsDrawer
+        isOpen={isSolutionsDrawerOpen}
+        onClose={() => setIsSolutionsDrawerOpen(false)}
         onSelectAction={(activityType) => {
-          setInitialLogType(activityType as ActivityType);
+          setInitialLogType(activityType);
           setInitialLogQty(undefined);
           setIsLogModalOpen(true);
         }}
@@ -470,20 +476,6 @@ export function App() {
         onClose={() => setIsDemoTourOpen(false)}
         onTriggerScenario={handleLoadScenario}
         onTriggerAbsurd={handleTriggerAbsurdDemo}
-      />
-
-      <SignInModal
-        isOpen={isSignInModalOpen}
-        onClose={() => setIsSignInModalOpen(false)}
-        onSelectPersona={(personaName, targetKg) => {
-          handleSaveTarget(targetKg);
-          addToast('success', `Signed in as ${personaName}`, `Weekly target synced to ${targetKg} kg CO₂.`);
-        }}
-      />
-
-      <AboutModal
-        isOpen={isAboutModalOpen}
-        onClose={() => setIsAboutModalOpen(false)}
       />
 
       <SearchModal

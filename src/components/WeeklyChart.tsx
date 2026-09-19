@@ -41,11 +41,11 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'var(--emerald-500)' }} />
+            <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'var(--forest-600)' }} />
             <span style={{ color: 'var(--text-secondary)' }}>Daily Total</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ width: '12px', height: '2px', background: 'rgba(255, 255, 255, 0.4)', borderTop: '1px dashed #FFFFFF' }} />
+            <span style={{ width: '12px', height: '2px', background: 'var(--forest-700)', borderTop: '1.5px dashed var(--forest-700)' }} />
             <span style={{ color: 'var(--text-muted)' }}>Daily Avg Target ({(metrics.targetKg / 7).toFixed(1)} kg)</span>
           </div>
         </div>
@@ -139,9 +139,9 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
                   y="0"
                   width={barWidth + gap / 2}
                   height={height + 25}
-                  fill={isHovered ? 'rgba(255, 255, 255, 0.05)' : 'transparent'}
+                  fill={isHovered ? 'rgba(36, 90, 66, 0.05)' : 'transparent'}
                   rx="6"
-                  stroke={isHovered ? 'rgba(52, 211, 153, 0.3)' : 'none'}
+                  stroke={isHovered ? 'rgba(36, 90, 66, 0.2)' : 'none'}
                   strokeWidth="1"
                 />
 
@@ -159,7 +159,7 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
                       ? 'url(#elevated-bar-gradient)'
                       : 'url(#normal-bar-gradient)'
                   }
-                  stroke={d.isToday ? 'var(--emerald-400)' : isHovered ? '#FFFFFF' : 'none'}
+                  stroke={d.isToday ? 'var(--forest-800)' : isHovered ? 'var(--forest-600)' : 'none'}
                   strokeWidth={d.isToday || isHovered ? 1.5 : 0}
                   style={{
                     transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',

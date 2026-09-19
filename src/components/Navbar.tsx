@@ -1,5 +1,5 @@
-import React from 'react';
-import { Leaf, Search, ArrowRight, Target, LayoutDashboard, History } from 'lucide-react';
+import React, { useState } from 'react';
+import { Leaf, Search, ArrowRight, Target, LayoutDashboard, History, Menu, X, Sparkles } from 'lucide-react';
 import type { WeekMetrics } from '../types';
 
 interface NavbarProps {
@@ -8,9 +8,7 @@ interface NavbarProps {
   onTabChange: (tab: 'dashboard' | 'history') => void;
   onOpenLogModal: () => void;
   onOpenTargetModal: () => void;
-  onOpenSolutionsModal: () => void;
-  onOpenAboutModal: () => void;
-  onOpenSignInModal: () => void;
+  onOpenSolutionsDrawer: () => void;
   onOpenSearchModal: () => void;
 }
 
@@ -20,22 +18,36 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTabChange,
   onOpenLogModal,
   onOpenTargetModal,
-  onOpenSolutionsModal,
-  onOpenAboutModal,
-  onOpenSignInModal,
+  onOpenSolutionsDrawer,
   onOpenSearchModal,
 }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (id: string) => {
+    setIsMobileMenuOpen(false);
+    if (activeTab !== 'dashboard') {
+      onTabChange('dashboard');
+    }
+    // Allow state to settle before scrolling
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
   return (
     <header
       style={{
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: 'rgba(244, 246, 240, 0.88)',
+        background: 'rgba(244, 246, 240, 0.92)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(27, 67, 50, 0.08)',
-        padding: '14px 24px',
+        borderBottom: '1px solid var(--border-subtle)',
+        padding: '12px 24px',
         transition: 'all 0.2s ease',
       }}
     >
@@ -49,9 +61,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           gap: '16px',
         }}
       >
-        {/* Left: Brand Logo & Title (Matching reference image) */}
+        {/* Left: Brand Logo & Title */}
         <div
-          onClick={() => onTabChange('dashboard')}
+          onClick={() => scrollToSection('home')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              scrollToSection('home');
+            }
+          }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -59,6 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             cursor: 'pointer',
             userSelect: 'none',
           }}
+          aria-label="Carbon Pulse Home"
         >
           <div
             style={{
@@ -91,133 +112,123 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Center: Navigation Pill (Reference: Home • Track • Insights • Solutions • About) */}
+        {/* Center: Desktop Navigation Pill */}
         <nav
           style={{
             display: 'flex',
             alignItems: 'center',
-            background: 'rgba(255, 255, 255, 0.82)',
-            border: '1px solid rgba(27, 67, 50, 0.1)',
+            background: 'rgba(255, 255, 255, 0.85)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--radius-pill)',
             padding: '4px 8px',
-            boxShadow: '0 2px 8px rgba(27, 67, 50, 0.04)',
+            boxShadow: 'var(--shadow-subtle)',
           }}
           aria-label="Primary Navigation"
-          className="navbar-center-pill"
+          className="navbar-desktop-nav"
         >
           {/* Home */}
           <button
-            onClick={() => onTabChange('dashboard')}
+            type="button"
+            onClick={() => scrollToSection('home')}
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.86rem',
-              fontWeight: activeTab === 'dashboard' ? 700 : 500,
-              color: activeTab === 'dashboard' ? 'var(--forest-950)' : 'var(--text-muted)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              position: 'relative',
+              fontWeight: 600,
+              color: 'var(--forest-950)',
               cursor: 'pointer',
             }}
           >
-            <span>Home</span>
-            {activeTab === 'dashboard' && (
-              <span
-                style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  background: 'var(--forest-800)',
-                  position: 'absolute',
-                  bottom: '2px',
-                }}
-              />
-            )}
+            Home
           </button>
 
-          {/* Track (Triggers Log Modal) */}
+          {/* Track (Scrolls to #track) */}
           <button
-            onClick={onOpenLogModal}
+            type="button"
+            onClick={() => scrollToSection('track')}
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.86rem',
               fontWeight: 500,
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
           >
             Track
           </button>
 
-          {/* Insights (Scrolls to or focuses on Insights) */}
+          {/* Insights (Scrolls to #insights-section) */}
           <button
-            onClick={() => {
-              if (activeTab !== 'dashboard') onTabChange('dashboard');
-              const el = document.getElementById('insights-section');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
+            type="button"
+            onClick={() => scrollToSection('insights-section')}
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.86rem',
               fontWeight: 500,
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
           >
             Insights
           </button>
 
-          {/* Solutions (Opens Solutions Modal) */}
+          {/* Solutions (Opens Solutions Drawer) */}
           <button
-            onClick={onOpenSolutionsModal}
+            type="button"
+            onClick={onOpenSolutionsDrawer}
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.86rem',
               fontWeight: 500,
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
           >
-            Solutions
+            <Sparkles size={14} color="var(--forest-600)" />
+            <span>Solutions</span>
           </button>
 
-          {/* About (Opens About Modal) */}
+          {/* About / Mission (Scrolls to #mission) */}
           <button
-            onClick={onOpenAboutModal}
+            type="button"
+            onClick={() => scrollToSection('mission')}
             style={{
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.86rem',
               fontWeight: 500,
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
           >
             About
           </button>
 
           {/* Activity Ledger Switcher */}
           <button
+            type="button"
             onClick={() => onTabChange(activeTab === 'dashboard' ? 'history' : 'dashboard')}
             style={{
-              marginLeft: '4px',
+              marginLeft: '6px',
               padding: '5px 12px',
               borderRadius: 'var(--radius-pill)',
               fontSize: '0.78rem',
-              fontWeight: 600,
-              background: activeTab === 'history' ? 'var(--forest-800)' : 'rgba(27, 67, 50, 0.06)',
+              fontWeight: 700,
+              background: activeTab === 'history' ? 'var(--forest-800)' : 'rgba(27, 67, 50, 0.08)',
               color: activeTab === 'history' ? '#ffffff' : 'var(--forest-800)',
               cursor: 'pointer',
               display: 'inline-flex',
@@ -230,10 +241,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Right: Search + Target Pill + Sign In + Get Started */}
+        {/* Right: Search + Target Pill + Get Started + Mobile Hamburger */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Target Quick Info Pill */}
           <button
+            type="button"
             onClick={onOpenTargetModal}
             className="btn btn-secondary btn-sm"
             title="Configure Weekly Carbon Budget"
@@ -243,38 +255,31 @@ export const Navbar: React.FC<NavbarProps> = ({
               gap: '6px',
               fontSize: '0.78rem',
               padding: '6px 12px',
-              border: metrics.isTargetExceeded ? '1px solid var(--rose-400)' : '1px solid rgba(27, 67, 50, 0.15)',
+              border: metrics.isTargetExceeded ? '1px solid var(--rose-400)' : '1px solid var(--border-subtle)',
               background: metrics.isTargetExceeded ? 'rgba(225, 29, 72, 0.08)' : 'rgba(255, 255, 255, 0.9)',
             }}
           >
             <Target size={14} color={metrics.isTargetExceeded ? 'var(--rose-500)' : 'var(--forest-700)'} />
-            <span style={{ fontFamily: 'var(--font-mono)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)' }} className="navbar-target-text">
               Target: <strong>{metrics.targetKg.toFixed(0)} kg</strong>
             </span>
           </button>
 
           {/* Search Icon */}
           <button
+            type="button"
             onClick={onOpenSearchModal}
             className="btn btn-secondary btn-icon"
             style={{ width: '38px', height: '38px', borderRadius: '50%' }}
-            aria-label="Search activities and factors"
+            aria-label="Search activities and emission factors"
             title="Search activities (/) "
           >
             <Search size={16} color="var(--forest-900)" />
           </button>
 
-          {/* Sign In button */}
+          {/* Primary CTA: Log Activity / Get Started */}
           <button
-            onClick={onOpenSignInModal}
-            className="btn btn-secondary btn-sm"
-            style={{ fontSize: '0.86rem', fontWeight: 600, padding: '7px 16px' }}
-          >
-            Sign In
-          </button>
-
-          {/* Get Started -> button (forest green matching reference) */}
-          <button
+            type="button"
             onClick={onOpenLogModal}
             className="btn btn-primary btn-sm"
             style={{
@@ -286,15 +291,125 @@ export const Navbar: React.FC<NavbarProps> = ({
               gap: '6px',
             }}
           >
-            <span>Get Started</span>
+            <span>Log Activity</span>
             <ArrowRight size={15} />
+          </button>
+
+          {/* Accessible Mobile Menu Toggle Button */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            className="btn btn-secondary btn-icon navbar-mobile-toggle"
+            aria-expanded={isMobileMenuOpen}
+            aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: 'var(--radius-md)',
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
+      {/* Accessible Mobile Menu Drawer */}
+      {isMobileMenuOpen && (
+        <div
+          role="region"
+          aria-label="Mobile Navigation Menu"
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            background: 'var(--bg-surface)',
+            borderBottom: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--shadow-floating)',
+            padding: '16px 20px 24px 20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            zIndex: 99,
+            animation: 'fadeIn 0.2s ease-out',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => scrollToSection('home')}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+          >
+            Home
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('track')}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+          >
+            Track Activities
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('insights-section')}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+          >
+            Weekly Insights
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              onOpenSolutionsDrawer();
+            }}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px', color: 'var(--forest-800)', fontWeight: 700 }}
+          >
+            <Sparkles size={16} />
+            <span>Climate Solutions</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('mission')}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+          >
+            Mission & Principles
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              onTabChange(activeTab === 'dashboard' ? 'history' : 'dashboard');
+            }}
+            className="btn btn-secondary"
+            style={{ justifyContent: 'flex-start', padding: '12px 16px' }}
+          >
+            {activeTab === 'history' ? <LayoutDashboard size={16} /> : <History size={16} />}
+            <span>Switch to {activeTab === 'history' ? 'Dashboard' : 'Ledger'}</span>
+          </button>
+        </div>
+      )}
+
       <style>{`
         @media (max-width: 900px) {
-          .navbar-center-pill {
+          .navbar-desktop-nav {
+            display: none !important;
+          }
+          .navbar-mobile-toggle {
+            display: inline-flex !important;
+          }
+          .navbar-target-text {
             display: none !important;
           }
         }

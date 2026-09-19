@@ -93,7 +93,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
               cy={size / 2}
               r={radius}
               fill="transparent"
-              stroke="rgba(255, 255, 255, 0.06)"
+              stroke="var(--sage-200)"
               strokeWidth={baseStrokeWidth}
             />
 

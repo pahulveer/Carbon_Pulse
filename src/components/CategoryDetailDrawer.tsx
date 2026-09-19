@@ -297,14 +297,14 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
               style={{
                 padding: '40px 20px',
                 textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.02)',
+                background: 'var(--bg-surface-soft)',
                 borderRadius: 'var(--radius-md)',
                 border: '1px dashed var(--border-subtle)',
                 marginTop: '10px',
               }}
             >
               <PieChart size={32} color={categoryColor} style={{ margin: '0 auto 12px auto' }} />
-              <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '6px' }}>
+              <h4 style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--forest-950)', marginBottom: '6px' }}>
                 NO ACTIVITIES IN THIS CATEGORY
               </h4>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '18px' }}>

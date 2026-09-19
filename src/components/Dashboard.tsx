@@ -141,7 +141,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
             style={{
               width: '100%',
               height: '8px',
-              background: 'rgba(255, 255, 255, 0.08)',
+              background: 'var(--sage-200)',
               borderRadius: 'var(--radius-full)',
               overflow: 'hidden',
               position: 'relative',
@@ -152,8 +152,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 width: `${Math.min(metrics.percentUsed, 100)}%`,
                 height: '100%',
                 background: metrics.isTargetExceeded
-                  ? 'linear-gradient(90deg, #FB7185 0%, #F43F5E 100%)'
-                  : 'linear-gradient(90deg, #34D399 0%, #10B981 100%)',
+                  ? 'linear-gradient(90deg, #e11d48 0%, #be123c 100%)'
+                  : 'linear-gradient(90deg, #40916c 0%, #1b4332 100%)',
                 borderRadius: 'var(--radius-full)',
                 transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               }}

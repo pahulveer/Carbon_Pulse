@@ -140,7 +140,8 @@ export const TrackingHealth: React.FC<TrackingHealthProps> = ({
           gap: '8px',
           padding: '8px 10px',
           borderRadius: '6px',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: 'var(--bg-surface-soft)',
+          border: '1px solid var(--border-subtle)',
           borderLeft: '3px solid var(--sky-400)',
         }}
       >
