@@ -450,10 +450,11 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
           style={{
             textAlign: 'center',
             padding: '50px 20px',
+            background: '#ffffff',
           }}
         >
-          <AlertCircle size={36} color="var(--amber-400)" style={{ margin: '0 auto 12px auto' }} />
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '6px' }}>
+          <AlertCircle size={36} color="var(--amber-500)" style={{ margin: '0 auto 12px auto' }} />
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--forest-950)', marginBottom: '6px' }}>
             NO MATCHING ACTIVITIES
           </h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginBottom: '16px' }}>
@@ -471,6 +472,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
           style={{
             padding: 0,
             overflow: 'hidden',
+            background: '#ffffff',
           }}
         >
           <div style={{ overflowX: 'auto' }}>
@@ -485,7 +487,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
               <thead>
                 <tr
                   style={{
-                    background: 'rgba(10, 18, 30, 0.95)',
+                    background: '#f8faf7',
                     borderBottom: '1px solid var(--border-subtle)',
                     color: 'var(--text-muted)',
                     fontSize: '0.76rem',
@@ -506,7 +508,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                       title="Sort by date"
                       aria-label="Sort by date"
                       style={{
-                        color: filter.sortBy.startsWith('date') ? 'var(--emerald-400)' : 'inherit',
+                        color: filter.sortBy.startsWith('date') ? 'var(--forest-800)' : 'inherit',
                       }}
                     >
                       <span>Date</span>
@@ -531,7 +533,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                       title="Sort by CO2 footprint"
                       aria-label="Sort by carbon footprint"
                       style={{
-                        color: filter.sortBy.startsWith('co2') ? 'var(--emerald-400)' : 'inherit',
+                        color: filter.sortBy.startsWith('co2') ? 'var(--forest-800)' : 'inherit',
                       }}
                     >
                       <span>Footprint</span>
@@ -551,10 +553,10 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                     <tr
                       key={act.id}
                       style={{
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                        borderBottom: '1px solid var(--border-subtle)',
                         transition: 'background 0.15s ease',
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)')}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(27, 67, 50, 0.03)')}
                       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                     >
                       {/* Date */}
@@ -568,9 +570,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                       {/* Type */}
                       <td style={{ padding: '14px 18px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <div style={{ color: 'var(--emerald-400)' }}>{ICONS_MAP[act.type]}</div>
+                          <div style={{ color: 'var(--forest-800)' }}>{ICONS_MAP[act.type]}</div>
                           <div>
-                            <span style={{ fontWeight: 600, color: '#FFFFFF' }}>{def.label}</span>
+                            <span style={{ fontWeight: 600, color: 'var(--forest-950)' }}>{def.label}</span>
                             {act.flaggedAsAbsurd && (
                               <span
                                 className="badge badge-amber"

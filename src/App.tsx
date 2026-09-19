@@ -14,12 +14,20 @@ import { computeWeekMetrics } from './lib/weekUtils';
 import { generateSampleWeekData } from './lib/sampleData';
 import { EMISSION_FACTORS, ACTIVITY_DEFINITIONS, calculateCO2 } from './lib/emissions';
 import { Navbar } from './components/Navbar';
+import { HeroSection } from './components/HeroSection';
+import { FeatureStrip } from './components/FeatureStrip';
 import { Dashboard } from './components/Dashboard';
 import { HistoryView } from './components/HistoryView';
 import { LogActivityModal } from './components/LogActivityModal';
 import { WeeklyTargetModal } from './components/WeeklyTargetModal';
+import { SolutionsModal } from './components/SolutionsModal';
+import { WatchDemoModal } from './components/WatchDemoModal';
+import { SignInModal } from './components/SignInModal';
+import { AboutModal } from './components/AboutModal';
+import { SearchModal } from './components/SearchModal';
 import { TargetExceededNudge } from './components/TargetExceededNudge';
 import { DemoToolbar } from './components/DemoToolbar';
+import { Footer } from './components/Footer';
 import { ToastContainer } from './components/Toast';
 import confetti from 'canvas-confetti';
 
@@ -69,6 +77,11 @@ export function App() {
   const [initialLogType, setInitialLogType] = useState<ActivityType>('car');
   const [initialLogQty, setInitialLogQty] = useState<number | undefined>(undefined);
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
+  const [isSolutionsModalOpen, setIsSolutionsModalOpen] = useState(false);
+  const [isDemoTourOpen, setIsDemoTourOpen] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   // Toasts
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -118,7 +131,7 @@ export function App() {
           particleCount: 28,
           spread: 45,
           origin: { y: 0.85, x: 0.8 },
-          colors: ['#34D399', '#10B981', '#38BDF8'],
+          colors: ['#40916c', '#52b788', '#1b4332'],
           disableForReducedMotion: true,
         });
       } catch {
@@ -248,6 +261,11 @@ export function App() {
       if (e.key === 'Escape') {
         setIsLogModalOpen(false);
         setIsTargetModalOpen(false);
+        setIsSolutionsModalOpen(false);
+        setIsDemoTourOpen(false);
+        setIsSignInModalOpen(false);
+        setIsAboutModalOpen(false);
+        setIsSearchModalOpen(false);
         return;
       }
 
@@ -269,6 +287,9 @@ export function App() {
       } else if (e.key === 'h' || e.key === 'H') {
         e.preventDefault();
         setActiveTab('history');
+      } else if (e.key === '/') {
+        e.preventDefault();
+        setIsSearchModalOpen(true);
       }
     };
 
@@ -278,7 +299,7 @@ export function App() {
 
   return (
     <div className="app-wrapper">
-      {/* Top Sticky Navigation */}
+      {/* Top Floating Pill Navigation */}
       <Navbar
         metrics={metrics}
         activeTab={activeTab}
@@ -292,10 +313,43 @@ export function App() {
           setIsLogModalOpen(true);
         }}
         onOpenTargetModal={() => setIsTargetModalOpen(true)}
+        onOpenSolutionsModal={() => setIsSolutionsModalOpen(true)}
+        onOpenAboutModal={() => setIsAboutModalOpen(true)}
+        onOpenSignInModal={() => setIsSignInModalOpen(true)}
+        onOpenSearchModal={() => setIsSearchModalOpen(true)}
       />
 
       {/* Main Content Area */}
       <main className="main-container">
+        {/* If in Dashboard tab, render Hero Section & Feature Strip */}
+        {activeTab === 'dashboard' && (
+          <>
+            <HeroSection
+              metrics={metrics}
+              onStartTracking={() => {
+                setEditingActivity(null);
+                setInitialLogQty(undefined);
+                setIsLogModalOpen(true);
+              }}
+              onWatchDemo={() => setIsDemoTourOpen(true)}
+            />
+
+            <FeatureStrip
+              onTrackClick={() => {
+                setEditingActivity(null);
+                setInitialLogQty(undefined);
+                setIsLogModalOpen(true);
+              }}
+              onInsightsClick={() => {
+                const el = document.getElementById('insights-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              onGoalsClick={() => setIsTargetModalOpen(true)}
+              onSolutionsClick={() => setIsSolutionsModalOpen(true)}
+            />
+          </>
+        )}
+
         {/* Decision Point 1: The Nudge (Visible when target is crossed, regardless of tab) */}
         <TargetExceededNudge
           metrics={metrics}
@@ -311,7 +365,7 @@ export function App() {
           }}
         />
 
-        {/* View Switcher */}
+        {/* View Switcher: Dashboard vs Activity Ledger */}
         {activeTab === 'dashboard' ? (
           <Dashboard
             metrics={metrics}
@@ -352,6 +406,33 @@ export function App() {
         )}
       </main>
 
+      {/* Modern Nature Editorial Footer */}
+      <Footer
+        onNavClick={(sec) => {
+          if (sec === 'solutions') {
+            setIsSolutionsModalOpen(true);
+          } else if (sec === 'about') {
+            setIsAboutModalOpen(true);
+          } else if (sec === 'track') {
+            setEditingActivity(null);
+            setInitialLogQty(undefined);
+            setIsLogModalOpen(true);
+          } else if (sec === 'history') {
+            setActiveTab('history');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (sec === 'insights') {
+            setActiveTab('dashboard');
+            setTimeout(() => {
+              const el = document.getElementById('insights-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+          } else {
+            setActiveTab('dashboard');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }}
+      />
+
       {/* Modals */}
       <LogActivityModal
         isOpen={isLogModalOpen}
@@ -372,6 +453,47 @@ export function App() {
         currentWeeklyFootprint={metrics.totalCo2Kg}
         onClose={() => setIsTargetModalOpen(false)}
         onSaveTarget={handleSaveTarget}
+      />
+
+      <SolutionsModal
+        isOpen={isSolutionsModalOpen}
+        onClose={() => setIsSolutionsModalOpen(false)}
+        onSelectAction={(activityType) => {
+          setInitialLogType(activityType as ActivityType);
+          setInitialLogQty(undefined);
+          setIsLogModalOpen(true);
+        }}
+      />
+
+      <WatchDemoModal
+        isOpen={isDemoTourOpen}
+        onClose={() => setIsDemoTourOpen(false)}
+        onTriggerScenario={handleLoadScenario}
+        onTriggerAbsurd={handleTriggerAbsurdDemo}
+      />
+
+      <SignInModal
+        isOpen={isSignInModalOpen}
+        onClose={() => setIsSignInModalOpen(false)}
+        onSelectPersona={(personaName, targetKg) => {
+          handleSaveTarget(targetKg);
+          addToast('success', `Signed in as ${personaName}`, `Weekly target synced to ${targetKg} kg CO₂.`);
+        }}
+      />
+
+      <AboutModal
+        isOpen={isAboutModalOpen}
+        onClose={() => setIsAboutModalOpen(false)}
+      />
+
+      <SearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        onSelectActivity={(type) => {
+          setInitialLogType(type);
+          setInitialLogQty(undefined);
+          setIsLogModalOpen(true);
+        }}
       />
 
       {/* Demo Toolbar for Hackathon Judges */}

@@ -171,7 +171,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
                 fontSize: '1.45rem',
                 fontWeight: 800,
                 fontFamily: 'var(--font-mono)',
-                color: activeData ? activeData.color : '#FFFFFF',
+                color: activeData ? activeData.color : 'var(--forest-950)',
                 transition: 'color 0.2s ease',
               }}
             >
@@ -221,22 +221,14 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
                   justifyContent: 'space-between',
                   padding: '10px 14px 10px 16px',
                   borderRadius: 'var(--radius-md)',
-                  // Normal: dark surface; Hovered: slightly brighter surface with subtle category wash
-                  background: isHovered
-                    ? `linear-gradient(90deg, ${c.color}20 0%, rgba(18, 26, 42, 0.88) 100%)`
-                    : 'rgba(10, 18, 30, 0.7)',
-                  // Normal: subtle border; Hovered: stronger colored border
+                  background: isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
                   border: `1px solid ${isHovered ? c.color : 'var(--border-subtle)'}`,
-                  // Hovered: layered tight soft colored aura (8-16px range) + subtle inner highlight + dark depth elevation
-                  boxShadow: isHovered
-                    ? `0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 0 12px 1px ${c.color}38, 0 0 4px 0px ${c.color}50, inset 0 0 8px 0px ${c.color}24`
-                    : 'none',
+                  boxShadow: isHovered ? 'var(--shadow-card)' : 'var(--shadow-subtle)',
                   outline: isHovered ? `2px solid ${c.color}55` : 'none',
                   outlineOffset: '2px',
                   cursor: 'pointer',
                   transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
-                  transition:
-                    'background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast)',
+                  transition: 'all var(--transition-fast)',
                 }}
               >
                 {/* Left accent indicator strip with localized glow on hover */}
@@ -257,7 +249,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{ color: c.color, display: 'flex', alignItems: 'center' }}>{CATEGORY_ICONS[c.category]}</div>
                   <div>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--forest-950)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <span>{c.label}</span>
                       {isHovered && (
                         <span style={{ fontSize: '0.68rem', color: c.color, fontFamily: 'var(--font-mono)' }}>

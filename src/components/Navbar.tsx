@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Plus, Target, Calendar, History, LayoutDashboard } from 'lucide-react';
+import { Leaf, Search, ArrowRight, Target, LayoutDashboard, History } from 'lucide-react';
 import type { WeekMetrics } from '../types';
 
 interface NavbarProps {
@@ -8,6 +8,10 @@ interface NavbarProps {
   onTabChange: (tab: 'dashboard' | 'history') => void;
   onOpenLogModal: () => void;
   onOpenTargetModal: () => void;
+  onOpenSolutionsModal: () => void;
+  onOpenAboutModal: () => void;
+  onOpenSignInModal: () => void;
+  onOpenSearchModal: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,6 +20,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTabChange,
   onOpenLogModal,
   onOpenTargetModal,
+  onOpenSolutionsModal,
+  onOpenAboutModal,
+  onOpenSignInModal,
+  onOpenSearchModal,
 }) => {
   return (
     <header
@@ -23,123 +31,208 @@ export const Navbar: React.FC<NavbarProps> = ({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: 'rgba(7, 11, 18, 0.88)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid var(--border-subtle)',
+        background: 'rgba(244, 246, 240, 0.88)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(27, 67, 50, 0.08)',
         padding: '14px 24px',
+        transition: 'all 0.2s ease',
       }}
     >
       <div
         style={{
-          maxWidth: '1320px',
+          maxWidth: '1360px',
           margin: '0 auto',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          flexWrap: 'wrap',
           gap: '16px',
         }}
       >
-        {/* Brand */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* Left: Brand Logo & Title (Matching reference image) */}
+        <div
+          onClick={() => onTabChange('dashboard')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            cursor: 'pointer',
+            userSelect: 'none',
+          }}
+        >
           <div
             style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%)',
-              border: '1px solid rgba(52, 211, 153, 0.35)',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: 'var(--forest-800)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)',
+              color: '#ffffff',
+              boxShadow: '0 4px 12px rgba(27, 67, 50, 0.2)',
             }}
           >
-            <Activity size={22} color="var(--emerald-400)" />
+            <Leaf size={18} />
           </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 800,
-                  fontSize: '1.25rem',
-                  letterSpacing: '0.04em',
-                  background: 'linear-gradient(90deg, #FFFFFF 0%, #34D399 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                CARBON//PULSE
-              </span>
-              <span className="badge badge-emerald" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
-                v1.0 Live
-              </span>
-            </div>
-            <div
+
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+            <span
               style={{
-                fontSize: '0.78rem',
-                color: 'var(--text-muted)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-display)',
+                fontWeight: 800,
+                fontSize: '1.28rem',
+                letterSpacing: '-0.02em',
+                color: 'var(--forest-950)',
               }}
             >
-              <Calendar size={12} />
-              <span>{metrics.weekRangeFormatted}</span>
-              <span style={{ color: 'var(--text-dim)' }}>•</span>
-              <span className="pulse-dot" style={{ width: '6px', height: '6px' }}></span>
-              <span style={{ color: 'var(--emerald-400)' }}>Active Week</span>
-            </div>
+              Carbon Pulse
+            </span>
           </div>
         </div>
 
-        {/* View Switcher Tabs */}
+        {/* Center: Navigation Pill (Reference: Home • Track • Insights • Solutions • About) */}
         <nav
           style={{
             display: 'flex',
             alignItems: 'center',
-            background: 'rgba(14, 22, 38, 0.8)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--radius-full)',
-            padding: '4px',
+            background: 'rgba(255, 255, 255, 0.82)',
+            border: '1px solid rgba(27, 67, 50, 0.1)',
+            borderRadius: 'var(--radius-pill)',
+            padding: '4px 8px',
+            boxShadow: '0 2px 8px rgba(27, 67, 50, 0.04)',
           }}
-          aria-label="Main Navigation"
+          aria-label="Primary Navigation"
+          className="navbar-center-pill"
         >
+          {/* Home */}
           <button
             onClick={() => onTabChange('dashboard')}
-            className="btn btn-sm"
             style={{
-              borderRadius: 'var(--radius-full)',
-              background: activeTab === 'dashboard' ? 'rgba(52, 211, 153, 0.18)' : 'transparent',
-              color: activeTab === 'dashboard' ? 'var(--emerald-400)' : 'var(--text-secondary)',
-              border: activeTab === 'dashboard' ? '1px solid rgba(52, 211, 153, 0.4)' : '1px solid transparent',
-              fontWeight: 600,
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.86rem',
+              fontWeight: activeTab === 'dashboard' ? 700 : 500,
+              color: activeTab === 'dashboard' ? 'var(--forest-950)' : 'var(--text-muted)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              cursor: 'pointer',
             }}
           >
-            <LayoutDashboard size={15} />
-            <span>Dashboard</span>
+            <span>Home</span>
+            {activeTab === 'dashboard' && (
+              <span
+                style={{
+                  width: '4px',
+                  height: '4px',
+                  borderRadius: '50%',
+                  background: 'var(--forest-800)',
+                  position: 'absolute',
+                  bottom: '2px',
+                }}
+              />
+            )}
           </button>
+
+          {/* Track (Triggers Log Modal) */}
           <button
-            onClick={() => onTabChange('history')}
-            className="btn btn-sm"
+            onClick={onOpenLogModal}
             style={{
-              borderRadius: 'var(--radius-full)',
-              background: activeTab === 'history' ? 'rgba(56, 189, 248, 0.18)' : 'transparent',
-              color: activeTab === 'history' ? 'var(--sky-400)' : 'var(--text-secondary)',
-              border: activeTab === 'history' ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid transparent',
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.86rem',
+              fontWeight: 500,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          >
+            Track
+          </button>
+
+          {/* Insights (Scrolls to or focuses on Insights) */}
+          <button
+            onClick={() => {
+              if (activeTab !== 'dashboard') onTabChange('dashboard');
+              const el = document.getElementById('insights-section');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            style={{
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.86rem',
+              fontWeight: 500,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          >
+            Insights
+          </button>
+
+          {/* Solutions (Opens Solutions Modal) */}
+          <button
+            onClick={onOpenSolutionsModal}
+            style={{
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.86rem',
+              fontWeight: 500,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          >
+            Solutions
+          </button>
+
+          {/* About (Opens About Modal) */}
+          <button
+            onClick={onOpenAboutModal}
+            style={{
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.86rem',
+              fontWeight: 500,
+              color: 'var(--text-muted)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--forest-950)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          >
+            About
+          </button>
+
+          {/* Activity Ledger Switcher */}
+          <button
+            onClick={() => onTabChange(activeTab === 'dashboard' ? 'history' : 'dashboard')}
+            style={{
+              marginLeft: '4px',
+              padding: '5px 12px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.78rem',
               fontWeight: 600,
+              background: activeTab === 'history' ? 'var(--forest-800)' : 'rgba(27, 67, 50, 0.06)',
+              color: activeTab === 'history' ? '#ffffff' : 'var(--forest-800)',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
             }}
           >
-            <History size={15} />
-            <span>Activity Ledger</span>
+            {activeTab === 'history' ? <LayoutDashboard size={13} /> : <History size={13} />}
+            <span>{activeTab === 'history' ? 'Dashboard' : 'Ledger'}</span>
           </button>
         </nav>
 
-        {/* Action Controls & Target Status */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Target Quick Button */}
+        {/* Right: Search + Target Pill + Sign In + Get Started */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Target Quick Info Pill */}
           <button
             onClick={onOpenTargetModal}
             className="btn btn-secondary btn-sm"
@@ -147,34 +240,65 @@ export const Navbar: React.FC<NavbarProps> = ({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              borderColor: metrics.isTargetExceeded ? 'rgba(244, 63, 94, 0.4)' : 'var(--border-subtle)',
-              background: metrics.isTargetExceeded ? 'rgba(244, 63, 94, 0.08)' : 'rgba(255, 255, 255, 0.04)',
+              gap: '6px',
+              fontSize: '0.78rem',
+              padding: '6px 12px',
+              border: metrics.isTargetExceeded ? '1px solid var(--rose-400)' : '1px solid rgba(27, 67, 50, 0.15)',
+              background: metrics.isTargetExceeded ? 'rgba(225, 29, 72, 0.08)' : 'rgba(255, 255, 255, 0.9)',
             }}
           >
-            <Target size={15} color={metrics.isTargetExceeded ? 'var(--rose-400)' : 'var(--emerald-400)'} />
-            <span style={{ fontSize: '0.82rem', fontFamily: 'var(--font-mono)' }}>
-              Target:{' '}
-              <strong style={{ color: metrics.isTargetExceeded ? 'var(--rose-400)' : 'var(--text-primary)' }}>
-                {metrics.targetKg.toFixed(1)} kg
-              </strong>
+            <Target size={14} color={metrics.isTargetExceeded ? 'var(--rose-500)' : 'var(--forest-700)'} />
+            <span style={{ fontFamily: 'var(--font-mono)' }}>
+              Target: <strong>{metrics.targetKg.toFixed(0)} kg</strong>
             </span>
           </button>
 
-          {/* Primary CTA */}
+          {/* Search Icon */}
+          <button
+            onClick={onOpenSearchModal}
+            className="btn btn-secondary btn-icon"
+            style={{ width: '38px', height: '38px', borderRadius: '50%' }}
+            aria-label="Search activities and factors"
+            title="Search activities (/) "
+          >
+            <Search size={16} color="var(--forest-900)" />
+          </button>
+
+          {/* Sign In button */}
+          <button
+            onClick={onOpenSignInModal}
+            className="btn btn-secondary btn-sm"
+            style={{ fontSize: '0.86rem', fontWeight: 600, padding: '7px 16px' }}
+          >
+            Sign In
+          </button>
+
+          {/* Get Started -> button (forest green matching reference) */}
           <button
             onClick={onOpenLogModal}
-            className="btn btn-primary"
+            className="btn btn-primary btn-sm"
             style={{
-              boxShadow: '0 0 20px rgba(16, 185, 129, 0.35)',
+              padding: '8px 18px',
+              fontSize: '0.86rem',
               fontWeight: 700,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
           >
-            <Plus size={18} strokeWidth={2.5} />
-            <span>LOG ACTIVITY</span>
+            <span>Get Started</span>
+            <ArrowRight size={15} />
           </button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .navbar-center-pill {
+            display: none !important;
+          }
+        }
+      `}</style>
     </header>
   );
 };

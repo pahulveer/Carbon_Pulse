@@ -33,10 +33,10 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
       className="target-nudge-card"
       style={{
         marginBottom: '24px',
-        borderRadius: 'var(--radius-lg)',
-        background: 'linear-gradient(135deg, rgba(30, 16, 26, 0.92) 0%, rgba(18, 16, 28, 0.94) 100%)',
-        border: '1.5px solid rgba(251, 113, 133, 0.4)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 63, 94, 0.12)',
+        borderRadius: 'var(--radius-xl)',
+        background: '#ffffff',
+        border: '1.5px solid rgba(225, 29, 72, 0.35)',
+        boxShadow: 'var(--shadow-card)',
         padding: '22px 24px',
         position: 'relative',
         overflow: 'hidden',
@@ -50,7 +50,7 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
           left: 0,
           right: 0,
           height: '3px',
-          background: 'linear-gradient(90deg, #FB7185 0%, #F43F5E 50%, #FDA4AF 100%)',
+          background: 'linear-gradient(90deg, #fb7185 0%, #e11d48 50%, #fda4af 100%)',
         }}
       />
 
@@ -70,14 +70,14 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
               className="badge badge-rose"
               style={{
                 padding: '4px 10px',
-                fontSize: '0.76rem',
+                fontSize: '0.74rem',
                 fontWeight: 700,
                 letterSpacing: '0.04em',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'rgba(244, 63, 94, 0.16)',
-                borderColor: 'rgba(251, 113, 133, 0.5)',
+                background: 'rgba(225, 29, 72, 0.08)',
+                borderColor: 'rgba(225, 29, 72, 0.25)',
               }}
             >
               <HeartHandshake size={14} />
@@ -88,7 +88,7 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.86rem',
-                color: '#FDA4AF',
+                color: 'var(--rose-500)',
                 fontWeight: 700,
               }}
             >
@@ -100,7 +100,7 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
             style={{
               fontSize: '1.28rem',
               fontWeight: 800,
-              color: '#FFFFFF',
+              color: 'var(--forest-950)',
               marginBottom: '8px',
               letterSpacing: '-0.01em',
               display: 'flex',
@@ -108,13 +108,13 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
               gap: '8px',
             }}
           >
-            <Sparkles size={20} color="var(--rose-400)" style={{ flexShrink: 0 }} />
+            <Sparkles size={20} color="var(--rose-500)" style={{ flexShrink: 0 }} />
             <span>Your tracking still matters — keep going.</span>
           </h3>
 
           <p
             style={{
-              color: '#F1F5F9',
+              color: 'var(--text-secondary)',
               fontSize: '0.92rem',
               lineHeight: '1.6',
               maxWidth: '740px',
@@ -123,7 +123,7 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
           >
             You are <strong>{metrics.excessKg.toFixed(1)} kg</strong> past your {metrics.targetKg.toFixed(1)} kg weekly allowance.
             Awareness is the first and most critical step toward high-leverage reduction.
-            Continue logging your activities so you have complete data fidelity on which categories drove this week's variance.
+            Continue logging your activities so you have complete data fidelity on which categories drove this week&apos;s variance.
           </p>
 
           {/* Constructive Real-World Impact Perspective Strip */}
@@ -137,8 +137,8 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
           >
             <div
               style={{
-                background: 'rgba(15, 23, 42, 0.65)',
-                border: '1px solid rgba(251, 113, 133, 0.25)',
+                background: 'rgba(225, 29, 72, 0.04)',
+                border: '1px solid rgba(225, 29, 72, 0.15)',
                 borderRadius: 'var(--radius-md)',
                 padding: '10px 14px',
                 display: 'flex',
@@ -146,22 +146,22 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
                 gap: '10px',
               }}
             >
-              <Trees size={20} color="var(--emerald-400)" style={{ flexShrink: 0 }} />
+              <Trees size={20} color="var(--forest-700)" style={{ flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                   Absorption Context
                 </div>
-                <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
+                <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--forest-950)' }}>
                   ~{treeAbsorptionDays} Tree-Days
                 </div>
-                <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>to offset this week's excess</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>to offset this week&apos;s excess</div>
               </div>
             </div>
 
             <div
               style={{
-                background: 'rgba(15, 23, 42, 0.65)',
-                border: '1px solid rgba(251, 113, 133, 0.25)',
+                background: 'rgba(225, 29, 72, 0.04)',
+                border: '1px solid rgba(225, 29, 72, 0.15)',
                 borderRadius: 'var(--radius-md)',
                 padding: '10px 14px',
                 display: 'flex',
@@ -169,12 +169,12 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
                 gap: '10px',
               }}
             >
-              <Car size={20} color="var(--sky-400)" style={{ flexShrink: 0 }} />
+              <Car size={20} color="var(--sky-500)" style={{ flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                   Driving Equivalence
                 </div>
-                <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
+                <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--forest-950)' }}>
                   ~{equivalentDrivingKm} km Car Travel
                 </div>
                 <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>in equivalent carbon volume</div>

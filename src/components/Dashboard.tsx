@@ -245,10 +245,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
       {/* 2. Visualizations Grid (7-Day Bar Chart + Category Donut) */}
       <div
+        id="insights-section"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
           gap: '20px',
+          scrollMarginTop: '90px',
         }}
       >
         <WeeklyChart metrics={metrics} />
@@ -326,13 +328,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
             style={{
               padding: '40px 20px',
               textAlign: 'center',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: '#ffffff',
               borderRadius: 'var(--radius-md)',
               border: '1px dashed var(--border-subtle)',
             }}
           >
-            <Sparkles size={32} color="var(--emerald-400)" style={{ margin: '0 auto 12px auto' }} />
-            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#FFFFFF', marginBottom: '4px' }}>
+            <Sparkles size={32} color="var(--forest-600)" style={{ margin: '0 auto 12px auto' }} />
+            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--forest-950)', marginBottom: '4px' }}>
               No activities logged this week yet
             </h4>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
@@ -356,8 +358,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     justifyContent: 'space-between',
                     padding: '12px 16px',
                     borderRadius: 'var(--radius-md)',
-                    background: 'rgba(10, 18, 30, 0.7)',
+                    background: '#ffffff',
                     border: '1px solid var(--border-subtle)',
+                    boxShadow: 'var(--shadow-subtle)',
                     transition: 'all var(--transition-fast)',
                   }}
                 >
@@ -367,11 +370,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         width: '36px',
                         height: '36px',
                         borderRadius: '8px',
-                        background: 'rgba(255, 255, 255, 0.05)',
+                        background: 'rgba(27, 67, 50, 0.08)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--emerald-400)',
+                        color: 'var(--forest-800)',
                       }}
                     >
                       {ICONS_MAP[act.type]}
@@ -379,7 +382,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontWeight: 600, color: '#FFFFFF', fontSize: '0.92rem' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--forest-950)', fontSize: '0.92rem' }}>
                           {def.label}
                         </span>
                         {act.flaggedAsAbsurd && (

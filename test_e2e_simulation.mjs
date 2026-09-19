@@ -25,9 +25,8 @@ console.log('✓ Vite transpiler dynamically serves React 19 application without
 const cssRes = await fetch('http://localhost:5173/src/index.css');
 assert.strictEqual(cssRes.status, 200, 'index.css must be served with 200 OK');
 const css = await cssRes.text();
-assert.ok(css.includes('--emerald-400'), 'CSS variables must be present');
-assert.ok(css.includes('color-scheme: dark;'), 'Dark mode color scheme must be defined');
-console.log('✓ High-performance Obsidian design tokens and CSS served cleanly.');
+assert.ok(css.includes('color-scheme:'), 'Color scheme token must be defined in CSS');
+console.log('✓ High-performance nature porcelain design tokens and CSS served cleanly.');
 
 console.log('\n========================================================');
 console.log('LIVE SERVER & RUNTIME INTEGRATION TEST PASSED (100% OK)');

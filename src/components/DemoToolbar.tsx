@@ -43,11 +43,11 @@ export const DemoToolbar: React.FC<DemoToolbarProps> = ({
           className="glass-card"
           style={{
             padding: '12px 14px',
-            background: 'rgba(10, 16, 28, 0.96)',
+            background: '#ffffff',
             backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            border: '1px solid rgba(27, 67, 50, 0.15)',
             borderRadius: 'var(--radius-lg)',
-            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.65)',
+            boxShadow: 'var(--shadow-floating)',
             display: 'flex',
             flexDirection: 'column',
             gap: '8px',
@@ -165,22 +165,22 @@ export const DemoToolbar: React.FC<DemoToolbarProps> = ({
         className="btn btn-secondary btn-sm"
         style={{
           borderRadius: 'var(--radius-full)',
-          background: 'rgba(14, 22, 38, 0.88)',
+          background: 'rgba(255, 255, 255, 0.92)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(27, 67, 50, 0.18)',
+          boxShadow: 'var(--shadow-floating)',
           padding: '7px 14px',
           fontSize: '0.78rem',
           fontWeight: 600,
-          color: 'var(--text-secondary)',
+          color: 'var(--forest-950)',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
         }}
         title="Quick demo test fixtures for hackathon evaluation"
       >
-        <Sliders size={14} color="var(--emerald-400)" />
-        <span>Demo Controls</span>
+        <Sliders size={14} color="var(--forest-800)" />
+        <span>Judge Demo Fixtures</span>
         {isExpanded ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
       </button>
     </aside>

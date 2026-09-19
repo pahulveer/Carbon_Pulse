@@ -70,13 +70,14 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
               top: '-6px',
               left: `${Math.min(Math.max(((10 + hoveredIdx * (barWidth + gap) + barWidth / 2) / (totalWidth + 20)) * 100, 16), 84)}%`,
               transform: 'translateX(-50%)',
-              background: 'rgba(10, 18, 32, 0.96)',
-              border: '1px solid var(--emerald-400)',
+              background: '#ffffff',
+              border: '1.5px solid var(--forest-800)',
+              color: 'var(--forest-950)',
               borderRadius: 'var(--radius-sm)',
               padding: '6px 12px',
               fontSize: '0.8rem',
               fontFamily: 'var(--font-mono)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.55)',
+              boxShadow: 'var(--shadow-floating)',
               zIndex: 10,
               pointerEvents: 'none',
               whiteSpace: 'nowrap',
@@ -101,7 +102,7 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
               y1={height - (dailyTargetRef / chartMax) * height}
               x2={totalWidth + 20}
               y2={height - (dailyTargetRef / chartMax) * height}
-              stroke="rgba(255, 255, 255, 0.25)"
+              stroke="rgba(27, 67, 50, 0.25)"
               strokeDasharray="4 4"
               strokeWidth="1.5"
             />
@@ -205,18 +206,18 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ metrics, onSelectDay }
           {/* SVG Gradients */}
           <defs>
             <linearGradient id="normal-bar-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#0284C7" stopOpacity="0.6" />
+              <stop offset="0%" stopColor="#52b788" stopOpacity="1" />
+              <stop offset="100%" stopColor="#2d6a4f" stopOpacity="0.85" />
             </linearGradient>
 
             <linearGradient id="today-bar-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#34D399" stopOpacity="1" />
-              <stop offset="100%" stopColor="#059669" stopOpacity="0.75" />
+              <stop offset="0%" stopColor="#2d6a4f" stopOpacity="1" />
+              <stop offset="100%" stopColor="#1b4332" stopOpacity="1" />
             </linearGradient>
 
             <linearGradient id="elevated-bar-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.95" />
-              <stop offset="100%" stopColor="#B45309" stopOpacity="0.7" />
+              <stop offset="0%" stopColor="#d97706" stopOpacity="1" />
+              <stop offset="100%" stopColor="#b45309" stopOpacity="0.85" />
             </linearGradient>
           </defs>
         </svg>

@@ -66,13 +66,13 @@ export const WeeklyInsights: React.FC<WeeklyInsightsProps> = ({
             style={{
               padding: '36px 20px',
               textAlign: 'center',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: '#ffffff',
               borderRadius: 'var(--radius-md)',
               border: '1px dashed var(--border-subtle)',
             }}
           >
-            <Compass size={32} color="var(--sky-400)" style={{ margin: '0 auto 12px auto' }} />
-            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#FFFFFF', marginBottom: '6px' }}>
+            <Compass size={32} color="var(--forest-600)" style={{ margin: '0 auto 12px auto' }} />
+            <h4 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--forest-950)', marginBottom: '6px' }}>
               NO INSIGHTS YET
             </h4>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', maxWidth: '440px', margin: '0 auto 18px auto' }}>
@@ -99,15 +99,16 @@ export const WeeklyInsights: React.FC<WeeklyInsightsProps> = ({
               <div
                 key={item.id}
                 style={{
-                  padding: '14px 16px',
-                  borderRadius: 'var(--radius-md)',
-                  background: 'rgba(10, 18, 30, 0.65)',
+                  padding: '16px 18px',
+                  borderRadius: 'var(--radius-lg)',
+                  background: '#ffffff',
                   border: '1px solid var(--border-subtle)',
+                  boxShadow: 'var(--shadow-subtle)',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   gap: '10px',
-                  transition: 'border-color var(--transition-fast), background var(--transition-fast)',
+                  transition: 'border-color var(--transition-fast), transform var(--transition-fast)',
                 }}
               >
                 <div>
@@ -133,7 +134,7 @@ export const WeeklyInsights: React.FC<WeeklyInsightsProps> = ({
                     )}
                   </div>
 
-                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.3, marginBottom: '6px' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--forest-950)', lineHeight: 1.3, marginBottom: '6px' }}>
                     {item.headline}
                   </div>
 

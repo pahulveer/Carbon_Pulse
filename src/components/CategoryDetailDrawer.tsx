@@ -117,9 +117,9 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(5, 8, 15, 0.75)',
-          backdropFilter: 'blur(6px)',
-          WebkitBackdropFilter: 'blur(6px)',
+          background: 'rgba(18, 38, 28, 0.45)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
           transition: 'opacity 0.25s ease',
         }}
       />
@@ -132,9 +132,9 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
           width: '100%',
           maxWidth: '480px',
           height: '100%',
-          background: 'rgba(12, 18, 30, 0.98)',
-          borderLeft: `1.5px solid ${categoryColor}40`,
-          boxShadow: `-8px 0 32px rgba(0, 0, 0, 0.6), 0 0 20px -5px ${categoryColor}20`,
+          background: '#ffffff',
+          borderLeft: `2px solid ${categoryColor}`,
+          boxShadow: 'var(--shadow-floating)',
           display: 'flex',
           flexDirection: 'column',
           zIndex: 1001,
@@ -149,7 +149,7 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'rgba(255, 255, 255, 0.02)',
+            background: '#ffffff',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -173,7 +173,7 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <h3
                   id="category-drawer-title"
-                  style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}
+                  style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--forest-950)', letterSpacing: '-0.01em' }}
                 >
                   {categoryLabel}
                 </h3>
@@ -215,7 +215,7 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '10px',
-            background: 'rgba(8, 12, 22, 0.5)',
+            background: 'rgba(27, 67, 50, 0.04)',
             borderBottom: '1px solid var(--border-subtle)',
           }}
         >
@@ -223,9 +223,10 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
             style={{
               padding: '10px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: '#ffffff',
               border: '1px solid var(--border-subtle)',
               textAlign: 'center',
+              boxShadow: 'var(--shadow-subtle)',
             }}
           >
             <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: categoryColor }}>
@@ -238,12 +239,13 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
             style={{
               padding: '10px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: '#ffffff',
               border: '1px solid var(--border-subtle)',
               textAlign: 'center',
+              boxShadow: 'var(--shadow-subtle)',
             }}
           >
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: 'var(--forest-950)' }}>
               {categoryActivities.length}
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
@@ -255,9 +257,10 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
             style={{
               padding: '10px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(255, 255, 255, 0.03)',
+              background: '#ffffff',
               border: '1px solid var(--border-subtle)',
               textAlign: 'center',
+              boxShadow: 'var(--shadow-subtle)',
             }}
           >
             <div style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
@@ -327,8 +330,9 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
                   style={{
                     padding: '12px 14px',
                     borderRadius: 'var(--radius-md)',
-                    background: 'rgba(10, 18, 30, 0.7)',
+                    background: '#ffffff',
                     border: '1px solid var(--border-subtle)',
+                    boxShadow: 'var(--shadow-subtle)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -355,7 +359,7 @@ export const CategoryDetailDrawer: React.FC<CategoryDetailDrawerProps> = ({
 
                     <div style={{ minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#FFFFFF' }}>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--forest-950)' }}>
                           {def.label}
                         </span>
                         {act.flaggedAsAbsurd && (

@@ -41,7 +41,7 @@ export const TrackingHealth: React.FC<TrackingHealthProps> = ({
             <span style={{ fontSize: '0.82rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>
               Tracking Health
             </span>
-            <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#FFFFFF' }}>
+            <div style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--forest-950)' }}>
               Dataset Completeness
             </div>
           </div>
@@ -55,7 +55,7 @@ export const TrackingHealth: React.FC<TrackingHealthProps> = ({
       {/* Main Metric & Score */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <div>
-          <div style={{ fontSize: '1.28rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
+          <div style={{ fontSize: '1.28rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: 'var(--forest-950)' }}>
             {health.scoreLabel}
           </div>
           <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', marginTop: '2px' }}>
@@ -101,14 +101,14 @@ export const TrackingHealth: React.FC<TrackingHealthProps> = ({
                 padding: '6px 2px',
                 borderRadius: '6px',
                 background: d.isToday
-                  ? 'rgba(16, 185, 129, 0.12)'
+                  ? 'rgba(45, 106, 79, 0.12)'
                   : d.hasActivity
-                  ? 'rgba(255, 255, 255, 0.05)'
-                  : 'rgba(255, 255, 255, 0.02)',
+                  ? 'rgba(45, 106, 79, 0.06)'
+                  : 'rgba(27, 67, 50, 0.02)',
                 border: d.isToday
-                  ? '1px solid var(--emerald-400)'
+                  ? '1.5px solid var(--forest-800)'
                   : d.hasActivity
-                  ? '1px solid rgba(16, 185, 129, 0.3)'
+                  ? '1px solid rgba(45, 106, 79, 0.25)'
                   : '1px solid var(--border-subtle)',
               }}
             >
@@ -116,14 +116,14 @@ export const TrackingHealth: React.FC<TrackingHealthProps> = ({
                 style={{
                   fontSize: '0.68rem',
                   fontWeight: 700,
-                  color: d.isToday ? 'var(--emerald-400)' : d.hasActivity ? '#FFFFFF' : 'var(--text-dim)',
+                  color: d.isToday ? 'var(--forest-800)' : d.hasActivity ? 'var(--forest-950)' : 'var(--text-dim)',
                 }}
               >
                 {d.dayName.slice(0, 2)}
               </span>
 
               {d.hasActivity ? (
-                <CheckCircle2 size={12} color="var(--emerald-400)" />
+                <CheckCircle2 size={12} color="var(--forest-700)" />
               ) : (
                 <Circle size={12} color="var(--text-dim)" strokeWidth={1.5} />
               )}
