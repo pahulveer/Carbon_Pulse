@@ -20,6 +20,20 @@ export const AbsurdInputModal: React.FC<AbsurdInputModalProps> = ({
   onConfirmAnyway,
   onEditEntry,
 }) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        onEditEntry();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onEditEntry]);
+
   if (!isOpen) return null;
 
   const def = ACTIVITY_DEFINITIONS[activityType];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, ArrowRight, Target, PlusCircle, Trees, ZapOff, ShieldAlert } from 'lucide-react';
+import { ArrowRight, Target, PlusCircle, Trees, Car, Sparkles, HeartHandshake } from 'lucide-react';
 import type { WeekMetrics } from '../types';
 
 interface TargetExceededNudgeProps {
@@ -9,6 +9,11 @@ interface TargetExceededNudgeProps {
   onViewHistory: () => void;
 }
 
+/**
+ * Decision Point 1 (DP1): The Nudge (Target Exceeded)
+ * Core Philosophy: Encourage + inform, never shame and never block.
+ * Displays clear metrics, empowering microcopy, constructive context, and zero friction.
+ */
 export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
   metrics,
   onOpenLogModal,
@@ -17,34 +22,35 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
 }) => {
   if (!metrics.isTargetExceeded) return null;
 
-  // Tangible real-world impact equivalencies
+  // Tangible real-world impact equivalencies for grounding
   const treeAbsorptionDays = Math.max(Math.round(metrics.excessKg * 17.5), 1);
   const equivalentDrivingKm = Math.max(Math.round(metrics.excessKg * 5.0), 1);
 
   return (
     <div
       role="region"
-      aria-label="Weekly Target Status"
-      className="climate-overdraft-alert"
+      aria-label="Weekly Target Guidance"
+      className="target-nudge-card"
       style={{
         marginBottom: '24px',
         borderRadius: 'var(--radius-lg)',
-        background: 'linear-gradient(135deg, rgba(38, 14, 24, 0.95) 0%, rgba(22, 16, 32, 0.95) 100%)',
-        border: '1.5px solid rgba(244, 63, 94, 0.65)',
-        padding: '24px',
+        background: 'linear-gradient(135deg, rgba(30, 16, 26, 0.92) 0%, rgba(18, 16, 28, 0.94) 100%)',
+        border: '1.5px solid rgba(251, 113, 133, 0.4)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 63, 94, 0.12)',
+        padding: '22px 24px',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* Top urgent hazard strip */}
+      {/* Subtle top ambient indicator */}
       <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
           right: 0,
-          height: '4px',
-          background: 'linear-gradient(90deg, #E11D48 0%, #F43F5E 50%, #FB923C 100%)',
+          height: '3px',
+          background: 'linear-gradient(90deg, #FB7185 0%, #F43F5E 50%, #FDA4AF 100%)',
         }}
       />
 
@@ -58,41 +64,41 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
         }}
       >
         <div style={{ flex: '1 1 540px' }}>
-          {/* Header Beacon & Badges */}
+          {/* Header Badges & Metrics */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px', flexWrap: 'wrap' }}>
             <span
               className="badge badge-rose"
               style={{
                 padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: 800,
+                fontSize: '0.76rem',
+                fontWeight: 700,
                 letterSpacing: '0.04em',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'rgba(225, 29, 72, 0.25)',
-                borderColor: 'var(--rose-400)',
+                background: 'rgba(244, 63, 94, 0.16)',
+                borderColor: 'rgba(251, 113, 133, 0.5)',
               }}
             >
-              <ShieldAlert size={14} />
-              <span>CARBON BUDGET BREACHED • CLIMATE OVERDRAFT</span>
+              <HeartHandshake size={14} />
+              <span>WEEKLY TARGET EXCEEDED • SUPPORTIVE GUIDANCE</span>
             </span>
 
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.88rem',
+                fontSize: '0.86rem',
                 color: '#FDA4AF',
                 fontWeight: 700,
               }}
             >
-              {metrics.totalCo2Kg.toFixed(1)} kg / {metrics.targetKg.toFixed(1)} kg ({metrics.percentUsed}% exhausted)
+              {metrics.totalCo2Kg.toFixed(1)} kg / {metrics.targetKg.toFixed(1)} kg (+{metrics.excessKg.toFixed(1)} kg above target)
             </span>
           </div>
 
           <h3
             style={{
-              fontSize: '1.35rem',
+              fontSize: '1.28rem',
               fontWeight: 800,
               color: '#FFFFFF',
               marginBottom: '8px',
@@ -102,26 +108,25 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
               gap: '8px',
             }}
           >
-            <AlertTriangle size={22} color="var(--rose-400)" style={{ flexShrink: 0 }} />
-            <span>Weekly Carbon Budget Exceeded by +{metrics.excessKg.toFixed(1)} kg CO₂</span>
+            <Sparkles size={20} color="var(--rose-400)" style={{ flexShrink: 0 }} />
+            <span>Your tracking still matters — keep going.</span>
           </h3>
 
           <p
             style={{
               color: '#F1F5F9',
-              fontSize: '0.94rem',
+              fontSize: '0.92rem',
               lineHeight: '1.6',
-              maxWidth: '720px',
-              marginBottom: '14px',
+              maxWidth: '740px',
+              marginBottom: '16px',
             }}
           >
-            <strong>Your emissions have entered an active ecological deficit.</strong> At{' '}
-            <span style={{ color: 'var(--rose-400)', fontWeight: 700 }}>{metrics.percentUsed}%</span> of your
-            sustainable allowance, your current weekly footprint outpaces what natural planetary cycles can absorb.
-            Every further activity logged compounds this deficit.
+            You are <strong>{metrics.excessKg.toFixed(1)} kg</strong> past your {metrics.targetKg.toFixed(1)} kg weekly allowance.
+            Awareness is the first and most critical step toward high-leverage reduction.
+            Continue logging your activities so you have complete data fidelity on which categories drove this week's variance.
           </p>
 
-          {/* Concrete Real-World Impact Equivalency Strip */}
+          {/* Constructive Real-World Impact Perspective Strip */}
           <div
             style={{
               display: 'grid',
@@ -132,8 +137,8 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
           >
             <div
               style={{
-                background: 'rgba(15, 23, 42, 0.75)',
-                border: '1px solid rgba(244, 63, 94, 0.3)',
+                background: 'rgba(15, 23, 42, 0.65)',
+                border: '1px solid rgba(251, 113, 133, 0.25)',
                 borderRadius: 'var(--radius-md)',
                 padding: '10px 14px',
                 display: 'flex',
@@ -141,22 +146,22 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
                 gap: '10px',
               }}
             >
-              <Trees size={20} color="var(--amber-400)" style={{ flexShrink: 0 }} />
+              <Trees size={20} color="var(--emerald-400)" style={{ flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                  Sequestration Debt
+                  Absorption Context
                 </div>
                 <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
                   ~{treeAbsorptionDays} Tree-Days
                 </div>
-                <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>needed to absorb this week's excess</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>to offset this week's excess</div>
               </div>
             </div>
 
             <div
               style={{
-                background: 'rgba(15, 23, 42, 0.75)',
-                border: '1px solid rgba(244, 63, 94, 0.3)',
+                background: 'rgba(15, 23, 42, 0.65)',
+                border: '1px solid rgba(251, 113, 133, 0.25)',
                 borderRadius: 'var(--radius-md)',
                 padding: '10px 14px',
                 display: 'flex',
@@ -164,15 +169,15 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
                 gap: '10px',
               }}
             >
-              <ZapOff size={20} color="var(--rose-400)" style={{ flexShrink: 0 }} />
+              <Car size={20} color="var(--sky-400)" style={{ flexShrink: 0 }} />
               <div>
                 <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                  Combustion Equivalent
+                  Driving Equivalence
                 </div>
                 <div style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#FFFFFF' }}>
                   ~{equivalentDrivingKm} km Car Travel
                 </div>
-                <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>worth of cumulative overhead</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>in equivalent carbon volume</div>
               </div>
             </div>
           </div>
@@ -180,17 +185,17 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
           <div
             style={{
               fontSize: '0.8rem',
-              color: 'var(--text-muted)',
+              color: 'var(--text-secondary)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
             }}
           >
-            <span>💡 <strong>Immediate levers to flatten your curve:</strong> Opt for public transit, choose plant-based dining, and defer high-wattage appliance runs. Logging remains 100% unrestricted.</span>
+            <span>💡 <strong>Actionable levers:</strong> Explore public transit, plant-forward meal alternatives, or calibrate your target budget to fit your current lifestyle.</span>
           </div>
         </div>
 
-        {/* Action Triggers */}
+        {/* Action Triggers — Zero Interruption */}
         <div
           style={{
             display: 'flex',
@@ -204,13 +209,13 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
             onClick={onOpenLogModal}
             className="btn btn-primary"
             style={{
-              background: 'linear-gradient(135deg, #E11D48 0%, #BE123C 100%)',
-              boxShadow: '0 4px 16px rgba(225, 29, 72, 0.45)',
+              background: 'linear-gradient(135deg, #F43F5E 0%, #E11D48 100%)',
+              boxShadow: '0 4px 16px rgba(244, 63, 94, 0.35)',
               fontWeight: 700,
             }}
           >
             <PlusCircle size={16} />
-            <span>Log Activity</span>
+            <span>Continue Logging</span>
           </button>
 
           <button onClick={onViewHistory} className="btn btn-secondary btn-sm" style={{ width: '100%' }}>
@@ -220,7 +225,7 @@ export const TargetExceededNudge: React.FC<TargetExceededNudgeProps> = ({
 
           <button onClick={onOpenTargetModal} className="btn btn-secondary btn-sm" style={{ width: '100%' }} title="Calibrate weekly budget">
             <Target size={14} />
-            <span>Calibrate Target</span>
+            <span>Adjust Budget</span>
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import type { ActivityLog, ActivityType } from '../types';
+import type { ActivityLog, ActivityType, ActivityUnit } from '../types';
 import { EMISSION_FACTORS, calculateCO2 } from './emissions';
 
 const STORAGE_KEYS = {
@@ -10,6 +10,7 @@ const STORAGE_KEYS = {
 const DEFAULT_TARGET_KG = 20.0;
 
 const VALID_TYPES = new Set<string>(['car', 'bus', 'flight', 'electricity', 'veg_meal', 'non_veg_meal']);
+const VALID_UNITS = new Set<ActivityUnit>(['km', 'kWh', 'meals']);
 
 export interface ValidationResult {
   isValid: boolean;
@@ -84,14 +85,18 @@ export function validateAndSanitizeActivityLog(obj: unknown, index?: number): Va
   }
 
   // Unit and factor
-  const defUnit = type === 'electricity' ? 'kWh' : type === 'veg_meal' || type === 'non_veg_meal' ? 'meals' : 'km';
+  const defUnit: ActivityUnit = type === 'electricity' ? 'kWh' : type === 'veg_meal' || type === 'non_veg_meal' ? 'meals' : 'km';
   const factor = EMISSION_FACTORS[type];
+  const unit: ActivityUnit =
+    typeof item.unit === 'string' && VALID_UNITS.has(item.unit.trim() as ActivityUnit)
+      ? (item.unit.trim() as ActivityUnit)
+      : defUnit;
 
   const sanitized: ActivityLog = {
     id: item.id.trim(),
     type,
     quantity: item.quantity,
-    unit: (typeof item.unit === 'string' && item.unit.trim()) || defUnit,
+    unit,
     factor,
     co2Kg: expectedCo2, // Reconstruct canonical CO2 from production formula
     date: item.date,
@@ -150,8 +155,9 @@ export function loadWeeklyTarget(): number {
     const raw = localStorage.getItem(STORAGE_KEYS.WEEKLY_TARGET);
     if (raw === null) return DEFAULT_TARGET_KG;
     const val = parseFloat(raw);
-    if (isNaN(val) || val <= 0) return DEFAULT_TARGET_KG;
-    return Number(val.toFixed(1));
+    if (isNaN(val) || !isFinite(val) || val <= 0) return DEFAULT_TARGET_KG;
+    const clamped = Math.min(Math.max(1, val), 10000);
+    return Number(clamped.toFixed(1));
   } catch (err) {
     console.error('[CARBON//PULSE] Failed to load target from localStorage:', err);
     return DEFAULT_TARGET_KG;
@@ -163,7 +169,11 @@ export function loadWeeklyTarget(): number {
  */
 export function saveWeeklyTarget(targetKg: number): boolean {
   try {
-    const safeTarget = Math.max(1, Number(targetKg.toFixed(1)));
+    if (isNaN(targetKg) || !isFinite(targetKg) || targetKg <= 0) {
+      localStorage.setItem(STORAGE_KEYS.WEEKLY_TARGET, DEFAULT_TARGET_KG.toString());
+      return true;
+    }
+    const safeTarget = Math.min(Math.max(1, Number(targetKg.toFixed(1))), 10000);
     localStorage.setItem(STORAGE_KEYS.WEEKLY_TARGET, safeTarget.toString());
     return true;
   } catch (err) {
@@ -189,7 +199,11 @@ export function markAppInitialized(): void {
 
 function escapeCSV(val: unknown): string {
   if (val === null || val === undefined) return '';
-  const str = String(val);
+  let str = String(val);
+  // Prevent CSV formula injection in spreadsheet applications (Excel, LibreOffice, Google Sheets)
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
   if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
@@ -273,7 +287,7 @@ export function createActivityLog(
 ): ActivityLog {
   const factor = EMISSION_FACTORS[type];
   const co2Kg = calculateCO2(type, quantity);
-  const unit = type === 'electricity' ? 'kWh' : type === 'veg_meal' || type === 'non_veg_meal' ? 'meals' : 'km';
+  const unit: ActivityUnit = type === 'electricity' ? 'kWh' : type === 'veg_meal' || type === 'non_veg_meal' ? 'meals' : 'km';
 
   return {
     id: `act_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,

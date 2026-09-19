@@ -303,16 +303,47 @@ const reloaded = loadActivities();
 assert.strictEqual(reloaded.length, balancedData.length);
 assert.strictEqual(reloaded[0].id, balancedData[0].id);
 
-// Target persistence
+// 3. Test Unit Validation & Canonical Fallback
+const invalidUnitItem = {
+  id: 'test_unit',
+  type: 'car',
+  quantity: 10,
+  co2Kg: 2.00,
+  date: '2026-09-14',
+  unit: 'miles', // Invalid unit
+};
+const unitValResult = validateAndSanitizeActivityLog(invalidUnitItem);
+assert.strictEqual(unitValResult.isValid, true);
+assert.strictEqual(unitValResult.sanitizedLog?.unit, 'km', 'Invalid unit must default to canonical km');
+
+// 4. Target bounds safety & NaN recovery
+saveWeeklyTarget(-50);
+assert.strictEqual(loadWeeklyTarget(), 20.0, 'Negative target must recover to DEFAULT_TARGET_KG');
+saveWeeklyTarget(999999);
+assert.strictEqual(loadWeeklyTarget(), 10000.0, 'Excessive target must be clamped to 10000 kg');
 saveWeeklyTarget(25.5);
 assert.strictEqual(loadWeeklyTarget(), 25.5);
 
-// CSV Export
+// 5. CSV Export & Formula Injection Prevention
+const injectionItem: ActivityLog = {
+  id: 'inj_1',
+  type: 'car',
+  quantity: 10,
+  unit: 'km',
+  factor: 0.20,
+  co2Kg: 2.00,
+  date: '2026-09-14',
+  createdAt: Date.now(),
+  notes: '=cmd|"/C calc"!A0', // Dangerous formula
+};
+const injectionCsv = exportActivitiesToCSV([injectionItem]);
+assert.ok(injectionCsv.includes("'=cmd"), 'Formula injection characters (=, +, -, @) must be escaped with a single quote');
+
 const csvOutput = exportActivitiesToCSV(balancedData);
 assert.ok(csvOutput.startsWith('ID,Date,ActivityType,Quantity,Unit,EmissionFactor,CO2_kg,FlaggedAnomaly,Notes'));
 assert.ok(csvOutput.includes('car'));
 assert.ok(csvOutput.includes('15'));
-console.log('✓ Suite F passed: Full persistence and CSV export verified cleanly.\n');
+console.log('✓ Suite F passed: Full persistence, target safety, and CSV formula defense verified cleanly.\n');
 
 // -----------------------------------------------------------------------------
 // SUITE G: Product Intelligence Engine (src/lib/intelligence.ts)
