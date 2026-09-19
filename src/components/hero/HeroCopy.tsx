@@ -38,8 +38,9 @@ export const HeroCopy: React.FC<HeroCopyProps> = ({ onStartTracking, onWatchDemo
         <span>REDUCE</span>
       </div>
 
-      {/* Architectural Big Headline */}
+      {/* Architectural Big Headline with 2.5D Depth */}
       <h1
+        className="text-2d5-hero"
         style={{
           fontSize: 'clamp(2.5rem, 5.2vw, 4.6rem)',
           lineHeight: 1.05,
@@ -52,6 +53,7 @@ export const HeroCopy: React.FC<HeroCopyProps> = ({ onStartTracking, onWatchDemo
         Tomorrow<br />
         Starts{' '}
         <span
+          className="text-2d5-hero-accent"
           style={{
             color: 'var(--forest-600)',
             fontStyle: 'normal',
@@ -135,22 +137,22 @@ export const HeroCopy: React.FC<HeroCopyProps> = ({ onStartTracking, onWatchDemo
         </button>
       </div>
 
-      {/* Scroll to explore hint */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          marginTop: '20px',
-          color: 'var(--text-muted)',
-          fontSize: '0.74rem',
-          fontFamily: 'var(--font-mono)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.08em',
-        }}
-      >
-        <span>SCROLL TO EXPLORE</span>
-        <ChevronDown size={14} />
+      {/* Relaxing Smooth Scroll to explore button */}
+      <div>
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('features');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          className="hero-scroll-btn"
+          aria-label="Scroll down to explore features"
+        >
+          <span>SCROLL TO EXPLORE</span>
+          <ChevronDown size={14} className="hero-scroll-chevron" />
+        </button>
       </div>
     </div>
   );

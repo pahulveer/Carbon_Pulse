@@ -116,6 +116,11 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 86px;
+}
+
 html, body {
   min-height: 100vh;
   background-color: var(--bg-canvas);
@@ -142,7 +147,41 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   letter-spacing: -0.025em;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--forest-950);
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 3px rgba(13, 40, 24, 0.08),
+    0 6px 16px rgba(13, 40, 24, 0.04);
+}
+
+/* 2.5D Typographic Depth Utilities */
+.text-2d5-hero {
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 2px rgba(13, 40, 24, 0.09),
+    0 8px 18px rgba(13, 40, 24, 0.07),
+    0 18px 36px rgba(13, 40, 24, 0.03);
+}
+
+.text-2d5-hero-accent {
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 5px rgba(45, 106, 79, 0.24),
+    0 8px 22px rgba(45, 106, 79, 0.14);
+}
+
+.text-2d5-title {
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 4px rgba(13, 40, 24, 0.07);
+}
+
+.text-2d5-numeral {
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 3px rgba(13, 40, 24, 0.08),
+    0 6px 14px rgba(13, 40, 24, 0.05);
+  font-feature-settings: 'tnum' on, 'zero' on;
 }
 
 button {
@@ -265,34 +304,51 @@ input::placeholder, textarea::placeholder {
 }
 
 .btn-primary {
-  background: var(--forest-800);
+  background: linear-gradient(145deg, var(--forest-800) 0%, var(--forest-950) 100%);
   color: #ffffff;
-  box-shadow: 0 4px 16px 0 rgba(27, 67, 50, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 14px rgba(13, 40, 24, 0.22),
+    0 1px 2px rgba(13, 40, 24, 0.1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .btn-primary:hover {
-  background: var(--forest-700);
-  box-shadow: 0 8px 24px 0 rgba(27, 67, 50, 0.35);
-  transform: translateY(-1.5px);
+  background: linear-gradient(145deg, var(--forest-700) 0%, var(--forest-900) 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 8px 24px rgba(13, 40, 24, 0.28),
+    0 2px 5px rgba(13, 40, 24, 0.12);
+  transform: translateY(-2px);
   color: #ffffff;
 }
 
 .btn-primary:active {
   transform: translateY(0);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(13, 40, 24, 0.2);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(27, 67, 50, 0.12);
+  background: #ffffff;
+  border: 1.5px solid var(--border-subtle);
   color: var(--forest-900);
   backdrop-filter: blur(8px);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 6px rgba(13, 40, 24, 0.04);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .btn-secondary:hover {
-  background: #ffffff;
-  border-color: rgba(27, 67, 50, 0.25);
-  box-shadow: 0 4px 14px rgba(27, 67, 50, 0.08);
-  transform: translateY(-1px);
+  background: var(--bg-surface-soft);
+  border-color: var(--forest-600);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 6px 16px rgba(13, 40, 24, 0.08);
+  transform: translateY(-1.5px);
 }
 
 .btn-accent {
@@ -602,6 +658,77 @@ input::placeholder, textarea::placeholder {
   transform: scale(1.08);
   background: var(--forest-800);
   color: #ffffff;
+}
+
+/* ==========================================================================
+   Relaxing Scroll Experience & Micro-Animations
+   ========================================================================== */
+
+.scroll-progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--forest-800) 0%, var(--forest-600) 50%, var(--forest-500) 100%);
+  z-index: 1001;
+  box-shadow: 0 1px 6px rgba(64, 145, 108, 0.4);
+  pointer-events: none;
+  transition: width 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-section-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-section-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--forest-700);
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(238, 245, 235, 0.85);
+  border: 1px solid var(--sage-200);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 6px rgba(13, 40, 24, 0.05);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  width: fit-content;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.hero-scroll-btn:hover {
+  background: var(--sage-200);
+  border-color: var(--forest-600);
+  color: var(--forest-950);
+  transform: translateY(2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 10px rgba(13, 40, 24, 0.08);
+}
+
+.hero-scroll-chevron {
+  animation: gentleBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
 }
 
 /* ==========================================================================

@@ -70,6 +70,51 @@ export function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Relaxing ambient scroll progress tracking
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let rafId: number;
+    const updateScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      setScrollProgress(progress);
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateScroll);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateScroll();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Relaxing smooth scroll-driven section reveals
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+    const elements = document.querySelectorAll('.scroll-section-reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [activeTab]);
+
   // Modal & Drawer States
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<ActivityLog | null>(null);
@@ -294,6 +339,13 @@ export function App() {
 
   return (
     <div className="app-wrapper">
+      {/* Relaxing Ambient Scroll Progress Indicator */}
+      <div
+        className="scroll-progress-indicator"
+        style={{ width: `${scrollProgress}%` }}
+        aria-hidden="true"
+      />
+
       {/* Top Navigation */}
       <Navbar
         metrics={metrics}
@@ -315,7 +367,7 @@ export function App() {
       {/* Main Composition Root */}
       <main className="main-container">
         {/* Section 1: Hero Overview with 3D Nature Diorama */}
-        <section id="home">
+        <section id="home" className="scroll-section-reveal is-revealed">
           <HeroSection
             metrics={metrics}
             activities={activities}
@@ -329,7 +381,7 @@ export function App() {
         </section>
 
         {/* Section 2: Quick Feature Access Strip */}
-        <section id="features">
+        <section id="features" className="scroll-section-reveal">
           <FeatureStrip
             onTrackClick={() => {
               setEditingActivity(null);
@@ -364,7 +416,7 @@ export function App() {
         />
 
         {/* Section 3: Activity Tracker & Command Center */}
-        <section id="track" style={{ scrollMarginTop: '90px' }}>
+        <section id="track" className="scroll-section-reveal" style={{ scrollMarginTop: '90px' }}>
           {activeTab === 'dashboard' ? (
             <Dashboard
               metrics={metrics}
@@ -406,7 +458,7 @@ export function App() {
         </section>
 
         {/* Section 4: Mission & Principles */}
-        <section id="mission">
+        <section id="mission" className="scroll-section-reveal">
           <MissionSection />
         </section>
       </main>
