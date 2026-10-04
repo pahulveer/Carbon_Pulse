@@ -5,12 +5,6 @@ A high-precision personal carbon footprint command center that transforms everyd
 ## Track
 Climate Tech
 
-## Live Demo
-https://pahulveer.github.io/Carbon_Pulse/
-## Hackathon ID
-
-AZIS-8MNUDY
-
 ## Tech Stack
 - **Frontend Framework**: React 19 + TypeScript (Strict Type Safety)
 - **Build Engine**: Vite 8.3 (Sub-second HMR & optimized production bundling)
